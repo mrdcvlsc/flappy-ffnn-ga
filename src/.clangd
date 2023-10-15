@@ -1,0 +1,9 @@
+InlayHints:
+  Designators: No
+  Enabled: Yes
+  ParameterNames: No
+  DeducedTypes: Yes
+
+CompileFlags:
+  Add: [-std=c++20, -Wall, -Wextra, -Wpedantic, -Werror]
+  Compiler: clang++
