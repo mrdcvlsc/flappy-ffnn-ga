@@ -1,3 +1,3 @@
 # Specs
 
-- Game Resolution - 720x1280
+- Game Resolution - 640x360
