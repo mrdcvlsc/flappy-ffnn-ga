@@ -1,3 +1,4 @@
+#include <SFML/Graphics/Color.hpp>
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
@@ -6,6 +7,8 @@
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(640, 360), "Flappy FFNN-GA");
+
+    sf::Color background(19, 235, 220);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -16,7 +19,7 @@ int main() {
             }
         }
 
-        window.clear();
+        window.clear(background);
 
         // window.draw();
 
