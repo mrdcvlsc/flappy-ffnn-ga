@@ -7,12 +7,13 @@ CXX_STANDARD:=-std=c++17
 WFLAGS:=-Wall -Wextra -Wpedantic
 DFLAGS:=-g3 -fsanitize=address
 
+HEADERS:=$(wildcard *.hpp)
 BIN_OUT:=flappy.out
 
 run: $(BIN_OUT)
 	./$(BIN_OUT)
 
-$(BIN_OUT): main.cpp
+$(BIN_OUT): main.cpp $(HEADERS)
 	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) main.cpp -o $(BIN_OUT) $(LIBS) $(DFLAGS))
 	
 clean:
