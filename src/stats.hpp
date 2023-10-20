@@ -1,8 +1,8 @@
 #ifndef MRDCVLSC_STATS_HPP
 #define MRDCVLSC_STATS_HPP
 
-#include <exception>
 #include <iostream>
+#include <exception>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Drawable.hpp>
