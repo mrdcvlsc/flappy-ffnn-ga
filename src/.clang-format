@@ -40,3 +40,5 @@ AccessModifierOffset: 0
 FixNamespaceComments: true
 SpaceBeforeRangeBasedForLoopColon: false
 SpaceAfterCStyleCast: true
+
+SortIncludes: false
