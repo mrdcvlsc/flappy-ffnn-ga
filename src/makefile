@@ -3,7 +3,7 @@
 CC:=gcc
 CXX:=g++
 LIBS:=-lX11 -lXrandr -lXcursor -lsfml-graphics -lsfml-window -lsfml-system
-CXX_STANDARD:=-std=c++17
+CXX_STANDARD:=-std=c++20
 WFLAGS:=-Wall -Wextra -Wpedantic
 DFLAGS:=-g3 -fsanitize=address
 
