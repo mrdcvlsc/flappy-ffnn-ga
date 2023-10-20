@@ -1,8 +1,9 @@
 #ifndef MRDCVLSC_BIRD_HPP
 #define MRDCVLSC_BIRD_HPP
 
-#include "config.hpp"
 #include <SFML/Graphics/RectangleShape.hpp>
+
+#include "config.hpp"
 
 struct Bird : public sf::RectangleShape {
     /// Default bird side dimension length (SIZE x SIZE).
