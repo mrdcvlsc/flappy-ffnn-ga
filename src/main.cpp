@@ -1,23 +1,24 @@
+#include <iostream>
+#include <string>
+#include <chrono>
+#include <random>
+
+#include <cmath>
+
+#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
-#include <chrono>
-#include <cmath>
-#include <iostream>
-#include <random>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/VideoMode.hpp>
 
 #include "bird.hpp"
 #include "config.hpp"
 #include "pipe.hpp"
 #include "stats.hpp"
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Window/VideoMode.hpp>
-#include <string>
 
 int main() {
     static GameStats game_stats;
@@ -38,8 +39,7 @@ int main() {
 
     Bird bird;
 
-    Pipe p1(200, WINDOW_WIDTH, pipe_type::top);
-    Pipe p2(100, WINDOW_WIDTH, pipe_type::bottom);
+    Pipes<6> pipes;
 
     while (window.isOpen()) {
         sf::Time dt = game_stats.fps_clock.restart();
@@ -88,9 +88,7 @@ int main() {
 
         while (game_stats.timeSinceLastUpdate > game_stats.TIME_PER_FRAME) {
             game_stats.timeSinceLastUpdate -= game_stats.TIME_PER_FRAME;
-
-            p1.update(game_stats.TIME_PER_FRAME.asSeconds());
-            p2.update(game_stats.TIME_PER_FRAME.asSeconds());
+            pipes.update(game_stats.TIME_PER_FRAME.asSeconds());
         }
 
         window.clear(background);
@@ -100,8 +98,7 @@ int main() {
         // for (int i = 0; i < 50'000; ++i)
         window.draw(bird);
 
-        window.draw(p1);
-        window.draw(p2);
+        window.draw(pipes);
 
         window.draw(game_stats);
 
