@@ -82,6 +82,11 @@ int main() {
                     game_view.zoom(1.01f);
                 }
 
+                // bird jumps
+                if (event.key.scancode == sf::Keyboard::Scan::Space) {
+                    bird.jump();
+                }
+
                 window.setView(game_view);
             }
         }
@@ -89,6 +94,7 @@ int main() {
         while (game_stats.timeSinceLastUpdate > game_stats.TIME_PER_FRAME) {
             game_stats.timeSinceLastUpdate -= game_stats.TIME_PER_FRAME;
             pipes.update(game_stats.TIME_PER_FRAME.asSeconds());
+            bird.update(game_stats.TIME_PER_FRAME.asSeconds());
         }
 
         window.clear(background);
