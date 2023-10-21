@@ -39,7 +39,7 @@ int main() {
 
     Bird bird;
 
-    Pipes<6> pipes;
+    Pipes pipes;
 
     while (window.isOpen()) {
         sf::Time dt = game_stats.fps_clock.restart();
