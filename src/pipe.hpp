@@ -68,32 +68,20 @@ struct PipePair : public sf::Drawable {
     /// top pipe's maximum height.
     static constexpr float MAX_HEIGHT = static_cast<float>(WINDOW_HEIGHT) - MIN_HEIGHT - GAP;
 
-    std::mt19937                          engine;
-    std::uniform_real_distribution<float> rng;
-
     Pipe top;
     Pipe btm;
 
-    PipePair(float pos_x)
-        : engine(std::chrono::system_clock::now().time_since_epoch().count()), rng(MIN_HEIGHT, MAX_HEIGHT) {
-        float top_height = rng(engine);
+    PipePair(float pos_x, float top_height) {
         top = Pipe(top_height, pos_x, pipe_type::top);
         btm = Pipe(static_cast<float>(WINDOW_HEIGHT) - top_height - GAP, pos_x, pipe_type::bottom);
     }
 
-    PipePair() : PipePair(0.f) {
+    PipePair() : PipePair(0.f, 0.f) {
     }
 
     void update(float tick) {
         top.update(tick);
         btm.update(tick);
-    }
-
-    void new_height() {
-        float top_height = rng(engine);
-        top.setSize({Pipe::WIDTH, top_height});
-        btm.setSize({Pipe::WIDTH, static_cast<float>(WINDOW_HEIGHT) - top_height - GAP});
-        btm.setPosition(btm.getPosition().x, top_height + GAP);
     }
 
     void set_pos(float pos_x) {
@@ -111,24 +99,29 @@ struct PipePair : public sf::Drawable {
     }
 };
 
-/// fixed collection of `PipePair` classes.
-/// \tparam N - number of pipes to spawn.
-template <size_t N>
+/// six collection of `PipePair` classes.
 struct Pipes : public sf::Drawable {
-    /// starting position of the first pipe.
-    static constexpr float start_x = Bird::START_X_POS + static_cast<float>(WINDOW_WIDTH) * 0.2f;
+    /// starting position of the first pipe in the 2D world.
+    static constexpr float START_X = Bird::START_X + static_cast<float>(WINDOW_WIDTH) * 0.2f;
 
     /// X axis space between each set of pipe pairs.
     static constexpr float DISTANCE = Pipe::WIDTH + Bird::SIZE * 5.f;
 
-    std::array<PipePair, N> pairs;
+    static constexpr size_t COUNT = 6;
+
+    std::array<PipePair, COUNT> pairs;
+
+    std::mt19937                          engine;
+    std::uniform_real_distribution<float> rng;
 
     /// Current front pipe index.
     size_t front_pipe;
 
-    Pipes() : front_pipe(0) {
-        for (size_t i = 0; i < N; ++i) {
-            pairs[i] = PipePair(start_x + i * DISTANCE);
+    Pipes()
+        : engine(std::chrono::system_clock::now().time_since_epoch().count()),
+          rng(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_pipe(0) {
+        for (size_t i = 0; i < COUNT; ++i) {
+            pairs[i] = PipePair(START_X + i * DISTANCE, rng(engine));
         }
     }
 
@@ -141,15 +134,20 @@ struct Pipes : public sf::Drawable {
     /// \param tick elapsed per frame.
     void update(float tick) {
         size_t new_front_pipe = front_pipe;
-        for (size_t i = 0; i < N; ++i) {
-            size_t index = (front_pipe + i) % N;
+        for (size_t i = 0; i < COUNT; ++i) {
+            size_t index = (front_pipe + i) % COUNT;
 
             if (pairs[index].getPosition().x + Pipe::WIDTH < 0.f) {
-                size_t back_index = (front_pipe + N - 1) % N;
+                size_t back_index = (front_pipe + COUNT - 1) % COUNT;
                 pairs[index].set_pos(pairs[back_index].getPosition().x + DISTANCE);
-                pairs[index].new_height();
 
-                new_front_pipe = (new_front_pipe + 1) % N;
+                // generate new heights for the pipe that was moved to the back.
+                float top_height = rng(engine);
+                pairs[index].top.setSize({Pipe::WIDTH, top_height});
+                pairs[index].btm.setSize({Pipe::WIDTH, static_cast<float>(WINDOW_HEIGHT) - top_height - PipePair::GAP});
+                pairs[index].btm.setPosition(pairs[index].btm.getPosition().x, top_height + PipePair::GAP);
+
+                new_front_pipe = (new_front_pipe + 1) % COUNT;
             }
 
             pairs[index].update(tick);
