@@ -33,7 +33,7 @@ struct Pipe : public sf::RectangleShape {
     static constexpr float WIDTH = 30.f;
 
     /// Pipe movement speed in pixel per second.
-    static constexpr float SPEED = 40.f;
+    static constexpr float SPEED = 80.f;
 
     pipe_type position;
 
@@ -119,7 +119,7 @@ struct Pipes : public sf::Drawable {
     static constexpr float start_x = Bird::START_X_POS + static_cast<float>(WINDOW_WIDTH) * 0.2f;
 
     /// X axis space between each set of pipe pairs.
-    static constexpr float DISTANCE = Pipe::WIDTH + Bird::SIZE * 4.5f;
+    static constexpr float DISTANCE = Pipe::WIDTH + Bird::SIZE * 5.f;
 
     std::array<PipePair, N> pairs;
 
@@ -141,11 +141,11 @@ struct Pipes : public sf::Drawable {
     /// \param tick elapsed per frame.
     void update(float tick) {
         size_t new_front_pipe = front_pipe;
-        for (size_t iter_i = 0; iter_i < N; ++iter_i) {
-            size_t index = (front_pipe + iter_i) % N;
+        for (size_t i = 0; i < N; ++i) {
+            size_t index = (front_pipe + i) % N;
 
             if (pairs[index].getPosition().x + Pipe::WIDTH < 0.f) {
-                size_t back_index = mod((static_cast<int>(front_pipe) - 1), static_cast<int>(N));
+                size_t back_index = (front_pipe + N - 1) % N;
                 pairs[index].set_pos(pairs[back_index].getPosition().x + DISTANCE);
                 pairs[index].new_height();
 
