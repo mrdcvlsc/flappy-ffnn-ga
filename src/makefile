@@ -7,19 +7,26 @@ CXX_STANDARD:=-std=c++20
 WFLAGS:=-Wall -Wextra -Wpedantic
 DFLAGS:=-g3 -fsanitize=address
 
-HEADERS:=$(wildcard *.hpp)
+SRC:=$(wildcard *.cpp)
+OBJ=$(SRC:.cpp=.o)
 BIN_OUT:=flappy.out
 
 run: $(BIN_OUT)
 	./$(BIN_OUT)
 
-$(BIN_OUT): main.cpp $(HEADERS)
-	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) main.cpp -o $(BIN_OUT) $(LIBS) $(DFLAGS))
-	
+$(BIN_OUT): main.o config.hpp $(OBJ)
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) main.o $(OBJ) -o $(BIN_OUT) $(LIBS) $(DFLAGS))
+
+main.o : main.cc
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c main.cc -o main.o $(DFLAGS))
+
+$(OBJ): %.o : %.cpp %.hpp
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
+
 clean:
-	rm *.out
+	rm *.out *.o *.exe
 
 style:
 	@echo fixing code format and code style...
-	@clang-format -i -style=file *.cpp *.hpp
+	@clang-format -i -style=file main.cc *.cpp *.hpp
 	@echo done fixing style format.

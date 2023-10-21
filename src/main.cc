@@ -18,7 +18,7 @@
 #include "bird.hpp"
 #include "config.hpp"
 #include "pipe.hpp"
-#include "stats.hpp"
+#include "gamestats.hpp"
 
 int main() {
     static GameStats game_stats;
