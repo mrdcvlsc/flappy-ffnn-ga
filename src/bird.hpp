@@ -12,10 +12,10 @@ struct Bird : public sf::RectangleShape {
     static constexpr float SIZE = 20.f;
 
     /// Starting x position of the bird in the 2D world.
-    static constexpr float START_X_POS = static_cast<float>(WINDOW_WIDTH) / 5.f;
+    static constexpr float START_X = static_cast<float>(WINDOW_WIDTH) / 5.f;
 
     /// Starting y position of the bird in the 2D world.
-    static constexpr float START_Y_POS = static_cast<float>(WINDOW_HEIGHT) * 0.5f;
+    static constexpr float START_Y = static_cast<float>(WINDOW_HEIGHT) * 0.5f;
 
     /// Bird initial vertical speed.
     static constexpr float JUMP_SPEED = -260.f;
@@ -31,7 +31,7 @@ struct Bird : public sf::RectangleShape {
         setFillColor(sf::Color::Red);
         setOutlineThickness(3.f);
         setOutlineColor(sf::Color::Black);
-        setPosition(START_X_POS, START_Y_POS);
+        setPosition(START_X, START_Y);
     }
 
     void jump() {
