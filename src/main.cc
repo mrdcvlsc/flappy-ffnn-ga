@@ -19,6 +19,7 @@
 #include "config.hpp"
 #include "pipe.hpp"
 #include "gamestats.hpp"
+#include "collision.hpp"
 
 int main() {
     static GameStats game_stats;
@@ -95,6 +96,7 @@ int main() {
             game_stats.timeSinceLastUpdate -= game_stats.TIME_PER_FRAME;
             pipes.update(game_stats.TIME_PER_FRAME.asSeconds());
             bird.update(game_stats.TIME_PER_FRAME.asSeconds());
+            kill_bird_on_collision(bird, pipes);
         }
 
         window.clear(background);
