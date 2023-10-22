@@ -9,6 +9,8 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
 
+#include "bird.hpp"
+
 class GameStats : public sf::Drawable {
     public:
 
@@ -17,7 +19,7 @@ class GameStats : public sf::Drawable {
 
     static const sf::Time TIME_PER_FRAME;
 
-    unsigned int generation;
+    unsigned int generation, current_population, total_population;
     float        fps;
     sf::Clock    game_clock, fps_clock;
     sf::Time     timeSinceLastUpdate;
@@ -29,10 +31,13 @@ class GameStats : public sf::Drawable {
     /// \brief calculate current FPS & Game Time.
     /// \warning STRICTLY SHOULD ONLY BE CALLED AT THE VERY END OF A FRAME!.
     void update();
+    void population_update(size_t deaths);
+
+    void new_generation();
 
     private:
 
-    sf::Text m_fps_txt, m_time_txt, m_generation_txt;
+    sf::Text m_fps_txt, m_time_txt, m_generation_txt, m_population_txt;
     sf::Font m_font;
 };
 

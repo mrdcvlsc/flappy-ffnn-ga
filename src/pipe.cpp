@@ -55,7 +55,7 @@ void PipePair::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
 Pipes::Pipes()
     : engine(std::chrono::system_clock::now().time_since_epoch().count()),
-      rng(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_pipe(0) {
+      rng(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_pipe(0ULL) {
     for (size_t i = 0; i < COUNT; ++i) {
         pairs[i] = PipePair(START_X + i * DISTANCE, rng(engine));
     }
@@ -89,4 +89,11 @@ void Pipes::update(float tick) {
         pairs[index].update(tick);
     }
     front_pipe = new_front_pipe;
+}
+
+void Pipes::new_generation() {
+    front_pipe = 0ULL;
+    for (size_t i = 0; i < COUNT; ++i) {
+        pairs[i] = PipePair(START_X + i * DISTANCE, rng(engine));
+    }
 }

@@ -39,7 +39,7 @@ int main() {
 
     sf::Color background(19, 235, 220);
 
-    Bird bird;
+    Birds birds;
 
     Pipes pipes;
 
@@ -85,9 +85,9 @@ int main() {
                 }
 
                 // bird jumps
-                if (event.key.scancode == sf::Keyboard::Scan::Space) {
-                    bird.jump();
-                }
+                // if (event.key.scancode == sf::Keyboard::Scan::Space) {
+                //     birds.jump();
+                // }
 
                 window.setView(game_view);
             }
@@ -96,8 +96,10 @@ int main() {
         while (game_stats->timeSinceLastUpdate > GameStats::TIME_PER_FRAME) {
             game_stats->timeSinceLastUpdate -= GameStats::TIME_PER_FRAME;
             pipes.update(GameStats::TIME_PER_FRAME.asSeconds());
-            bird.update(GameStats::TIME_PER_FRAME.asSeconds());
-            kill_bird_on_collision(bird, pipes);
+            birds.update(GameStats::TIME_PER_FRAME.asSeconds());
+
+            size_t deaths = kill_birds_on_collision(birds, pipes);
+            game_stats->population_update(deaths);
         }
 
         window.clear(background);
@@ -105,13 +107,19 @@ int main() {
         window.draw(game_area);
 
         // for (int i = 0; i < 50'000; ++i)
-        window.draw(bird);
+        window.draw(birds);
 
         window.draw(pipes);
 
         window.draw(*game_stats);
 
         window.display();
+
+        if (birds.population == 0ULL) {
+            game_stats->new_generation();
+            pipes.new_generation();
+            birds.new_generation();
+        }
 
         game_stats->update();
     }

@@ -95,6 +95,8 @@ struct Pipes : public sf::Drawable {
 
     /// \param tick elapsed per frame.
     void update(float tick);
+
+    void new_generation();
 };
 
 #endif
