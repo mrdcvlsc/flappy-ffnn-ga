@@ -6,9 +6,10 @@
 #include "collision.hpp"
 #include "pipe.hpp"
 
-void kill_bird_on_collision(Bird &bird, Pipes const &pipes) {
-    if (bird.dead)
-        return;
+size_t kill_bird_on_collision(Bird &bird, Pipes const &pipes) {
+    if (bird.dead) {
+        return 0;
+    }
 
     bool hit_floor = bird.getPosition().y > static_cast<float>(WINDOW_HEIGHT);
 
@@ -32,5 +33,15 @@ void kill_bird_on_collision(Bird &bird, Pipes const &pipes) {
     hit_btm_pipe1 = bird_bounds.intersects(btm_pipe1_bounds);
     hit_btm_pipe2 = bird_bounds.intersects(btm_pipe2_bounds);
 
-    bird.dead = hit_floor | hit_top_pipe1 | hit_top_pipe2 | hit_btm_pipe1 | hit_btm_pipe2;
+    return (bird.dead = hit_floor | hit_top_pipe1 | hit_top_pipe2 | hit_btm_pipe1 | hit_btm_pipe2);
+}
+
+size_t kill_birds_on_collision(Birds &birds, Pipes const &pipes) {
+    size_t deaths = 0ULL;
+    for (auto &bird: birds.birds) {
+        deaths += kill_bird_on_collision(bird, pipes);
+    }
+
+    birds.population -= deaths;
+    return deaths;
 }

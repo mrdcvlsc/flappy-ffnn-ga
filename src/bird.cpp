@@ -1,5 +1,7 @@
 #include "bird.hpp"
 
+/////////////////////// Bird ///////////////////////
+
 Bird::Bird() : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), dead(false) {
     setOrigin(getSize() * 0.5f);
     setFillColor(sf::Color::Red);
@@ -27,5 +29,41 @@ void Bird::update(float dt) {
         speed += (GRAVITY * dt);
 
         move(0.f, distance);
+    }
+}
+
+/////////////////////// Birds ///////////////////////
+
+Birds::Birds()
+    : birds(), population(Birds::INITIAL_POPULATION),
+      engine(std::chrono::system_clock::now().time_since_epoch().count()), rng(0ULL, 100ULL) {
+    new_generation();
+}
+
+void Birds::new_generation() {
+    birds.clear();
+    for (size_t i = 0; i < INITIAL_POPULATION; ++i) {
+        birds.push_back(Bird());
+    }
+    population = INITIAL_POPULATION;
+}
+
+void Birds::update(float dt) {
+    for (auto &bird: birds) {
+        size_t chance = rng(engine);
+
+        if (chance > 80ULL) {
+            bird.jump();
+        }
+
+        bird.update(dt);
+    }
+}
+
+void Birds::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    for (auto &bird: birds) {
+        if (!bird.dead) {
+            target.draw(bird, states);
+        }
     }
 }

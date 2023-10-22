@@ -4,6 +4,7 @@
 #include "bird.hpp"
 #include "pipe.hpp"
 
-void kill_bird_on_collision(Bird &bird, Pipes const &pipes);
+size_t kill_bird_on_collision(Bird &bird, Pipes const &pipes);
+size_t kill_birds_on_collision(Birds &birds, Pipes const &pipes);
 
 #endif
