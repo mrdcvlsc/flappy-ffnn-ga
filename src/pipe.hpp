@@ -14,7 +14,6 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
-#include "bird.hpp"
 #include "config.hpp"
 
 template <typename T>
@@ -50,7 +49,7 @@ struct Pipe : public sf::RectangleShape {
 
 struct PipePair : public sf::Drawable {
     /// Y axis space between two pair of pipes.
-    static constexpr float GAP = Bird::SIZE * 6.f;
+    static constexpr float GAP = 110.f;
 
     /// top pipe's minimum height.
     static constexpr float MIN_HEIGHT = static_cast<float>(WINDOW_HEIGHT) / 12.f;
@@ -75,10 +74,10 @@ struct PipePair : public sf::Drawable {
 /// six collection of `PipePair` classes.
 struct Pipes : public sf::Drawable {
     /// starting position of the first pipe in the 2D world.
-    static constexpr float START_X = Bird::START_X + static_cast<float>(WINDOW_WIDTH) * 0.2f;
+    static constexpr float START_X = static_cast<float>(WINDOW_WIDTH) * 0.75f;
 
     /// X axis space between each set of pipe pairs.
-    static constexpr float DISTANCE = Pipe::WIDTH + Bird::SIZE * 5.f;
+    static constexpr float DISTANCE = Pipe::WIDTH + 100.f;
 
     static constexpr size_t COUNT = 6;
 
