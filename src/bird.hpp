@@ -18,10 +18,10 @@ struct Bird : public sf::RectangleShape {
     static constexpr float START_Y = static_cast<float>(WINDOW_HEIGHT) * 0.5f;
 
     /// Bird initial vertical speed.
-    static constexpr float JUMP_SPEED = -260.f;
+    static constexpr float JUMP_SPEED = -280.f;
 
     /// Gravitation acceleration.
-    static constexpr float GRAVITY = 570.f;
+    static constexpr float GRAVITY = 700.f;
 
     float time_lived;
     float speed;

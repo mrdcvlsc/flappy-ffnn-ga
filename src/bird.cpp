@@ -9,11 +9,7 @@ Bird::Bird() : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPE
 }
 
 bool Bird::is_alive() const {
-    if (getPosition().y > static_cast<float>(WINDOW_HEIGHT)) {
-        std::cerr << "Bird is dead\n";
-        return false;
-    }
-    return true;
+    return getPosition().y < static_cast<float>(WINDOW_HEIGHT);
 }
 
 void Bird::jump() {
