@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include <random>
+#include <memory>
 
 #include <cmath>
 
@@ -22,7 +23,7 @@
 #include "collision.hpp"
 
 int main() {
-    static GameStats game_stats;
+    auto game_stats = std::make_shared<GameStats>();
 
     sf::View           game_view(sf::FloatRect(0.f, 0.f, WINDOW_WIDTH, WINDOW_HEIGHT));
     sf::VideoMode      video_dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -34,7 +35,7 @@ int main() {
 
     sf::RenderWindow window(video_dimension, "Flappy FFNN-GA");
     window.setView(game_view);
-    window.setFramerateLimit(game_stats.FRAME_LIMIT);
+    window.setFramerateLimit(GameStats::FRAME_LIMIT);
 
     sf::Color background(19, 235, 220);
 
@@ -43,8 +44,8 @@ int main() {
     Pipes pipes;
 
     while (window.isOpen()) {
-        sf::Time dt = game_stats.fps_clock.restart();
-        game_stats.timeSinceLastUpdate += dt;
+        sf::Time dt = game_stats->fps_clock.restart();
+        game_stats->timeSinceLastUpdate += dt;
 
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -92,10 +93,10 @@ int main() {
             }
         }
 
-        while (game_stats.timeSinceLastUpdate > game_stats.TIME_PER_FRAME) {
-            game_stats.timeSinceLastUpdate -= game_stats.TIME_PER_FRAME;
-            pipes.update(game_stats.TIME_PER_FRAME.asSeconds());
-            bird.update(game_stats.TIME_PER_FRAME.asSeconds());
+        while (game_stats->timeSinceLastUpdate > GameStats::TIME_PER_FRAME) {
+            game_stats->timeSinceLastUpdate -= GameStats::TIME_PER_FRAME;
+            pipes.update(GameStats::TIME_PER_FRAME.asSeconds());
+            bird.update(GameStats::TIME_PER_FRAME.asSeconds());
             kill_bird_on_collision(bird, pipes);
         }
 
@@ -108,11 +109,11 @@ int main() {
 
         window.draw(pipes);
 
-        window.draw(game_stats);
+        window.draw(*game_stats);
 
         window.display();
 
-        game_stats.update();
+        game_stats->update();
     }
 
     return 0;

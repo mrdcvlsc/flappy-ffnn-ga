@@ -10,11 +10,6 @@
 #include <SFML/System/Time.hpp>
 
 class GameStats : public sf::Drawable {
-    private:
-
-    sf::Text m_fps_txt, m_time_txt;
-    sf::Font m_font;
-
     public:
 
     static constexpr size_t FRAME_LIMIT = 30;
@@ -22,9 +17,10 @@ class GameStats : public sf::Drawable {
 
     static const sf::Time TIME_PER_FRAME;
 
-    float     fps;
-    sf::Clock game_clock, fps_clock;
-    sf::Time  timeSinceLastUpdate;
+    unsigned int generation;
+    float        fps;
+    sf::Clock    game_clock, fps_clock;
+    sf::Time     timeSinceLastUpdate;
 
     GameStats();
 
@@ -33,6 +29,11 @@ class GameStats : public sf::Drawable {
     /// \brief calculate current FPS & Game Time.
     /// \warning STRICTLY SHOULD ONLY BE CALLED AT THE VERY END OF A FRAME!.
     void update();
+
+    private:
+
+    sf::Text m_fps_txt, m_time_txt, m_generation_txt;
+    sf::Font m_font;
 };
 
 #endif

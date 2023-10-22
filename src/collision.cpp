@@ -7,8 +7,9 @@
 #include "pipe.hpp"
 
 void kill_bird_on_collision(Bird &bird, Pipes const &pipes) {
-    if (bird.dead) return;
-    
+    if (bird.dead)
+        return;
+
     bool hit_floor = bird.getPosition().y > static_cast<float>(WINDOW_HEIGHT);
 
     // we will only check the first two incomming pipe pairs since
