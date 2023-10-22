@@ -1,6 +1,6 @@
 #include "bird.hpp"
 
-Bird::Bird() : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.75f) {
+Bird::Bird() : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), dead(false) {
     setOrigin(getSize() * 0.5f);
     setFillColor(sf::Color::Red);
     setOutlineThickness(3.f);
@@ -8,16 +8,12 @@ Bird::Bird() : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPE
     setPosition(START_X, START_Y);
 }
 
-bool Bird::is_alive() const {
-    return getPosition().y < static_cast<float>(WINDOW_HEIGHT);
-}
-
 void Bird::jump() {
     speed = JUMP_SPEED;
 }
 
 void Bird::update(float dt) {
-    if (is_alive()) {
+    if (!dead) {
         time_lived += dt;
 
         if (getPosition().y < Bird::SIZE * 0.5f) {

@@ -25,10 +25,10 @@ struct Bird : public sf::RectangleShape {
 
     float time_lived;
     float speed;
+    bool  dead;
 
     Bird();
 
-    bool is_alive() const;
     void jump();
     void update(float dt);
 };
