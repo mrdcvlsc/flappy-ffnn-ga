@@ -2,7 +2,7 @@ InlayHints:
   Designators: No
   Enabled: Yes
   ParameterNames: No
-  DeducedTypes: Yes
+  DeducedTypes: No
 
 CompileFlags:
   Add: [-std=c++20, -Wall, -Wextra, -Wpedantic, -Werror]
