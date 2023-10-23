@@ -51,6 +51,7 @@ void GameStats::update() {
     fps = 1.f / fps_clock.getElapsedTime().asMilliseconds() * 1000.f;
 }
 
+/// \brief updates the population text display.
 void GameStats::population_update(size_t deaths) {
     current_population -= deaths;
     m_population_txt.setString(
