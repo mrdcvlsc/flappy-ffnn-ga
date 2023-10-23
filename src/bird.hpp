@@ -11,6 +11,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include "config.hpp"
+#include "ffnn.hpp"
 
 struct Bird : public sf::RectangleShape {
     /// Default bird side dimension length (SIZE x SIZE).
@@ -31,6 +32,7 @@ struct Bird : public sf::RectangleShape {
     float time_lived;
     float speed;
     bool  dead;
+    FFNN  neural_net;
 
     Bird();
 

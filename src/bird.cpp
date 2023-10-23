@@ -2,7 +2,7 @@
 
 /////////////////////// Bird ///////////////////////
 
-Bird::Bird() : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), dead(false) {
+Bird::Bird() : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), dead(false), neural_net() {
     setOrigin(getSize() * 0.5f);
     setFillColor(sf::Color::Red);
     setOutlineThickness(3.f);
