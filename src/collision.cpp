@@ -2,9 +2,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 
-#include "config.hpp"
 #include "collision.hpp"
-#include "pipe.hpp"
 
 size_t kill_bird_on_collision(Bird &bird, Pipes const &pipes) {
     if (bird.dead) {
