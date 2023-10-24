@@ -1,4 +1,6 @@
 #include "bird.hpp"
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Color.hpp>
 
 /////////////////////// Bird ///////////////////////
 
@@ -50,12 +52,6 @@ void Birds::new_generation() {
 
 void Birds::update(float dt) {
     for (auto &bird: birds) {
-        size_t chance = rng(engine);
-
-        if (chance > 80ULL) {
-            bird.jump();
-        }
-
         bird.update(dt);
     }
 }
@@ -64,6 +60,12 @@ void Birds::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     for (auto &bird: birds) {
         if (!bird.dead) {
             target.draw(bird, states);
+
+            // a note to self : for debugging purposes / remove later
+            sf::CircleShape test(5.f, 3);
+            test.setFillColor(sf::Color::Yellow);
+            test.setPosition(bird.last_pipe_gap);
+            target.draw(test, states);
         }
     }
 }

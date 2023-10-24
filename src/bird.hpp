@@ -6,6 +6,7 @@
 #include <random>
 #include <vector>
 
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -29,10 +30,11 @@ struct Bird : public sf::RectangleShape {
     /// Gravitation acceleration.
     static constexpr float GRAVITY = 700.f;
 
-    float time_lived;
-    float speed;
-    bool  dead;
-    FFNN  neural_net;
+    float        time_lived;
+    float        speed;
+    bool         dead;
+    FFNN         neural_net;
+    sf::Vector2f last_pipe_gap;
 
     Bird();
 
