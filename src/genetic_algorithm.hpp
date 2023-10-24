@@ -13,6 +13,8 @@ class GeneticAlgorithm {
     public:
 
     void get_inputs(Birds &birds, Pipes const &pipes);
+
+    void calculate_fitness(Birds &birds);
 };
 
 #endif
