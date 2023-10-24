@@ -74,7 +74,7 @@ struct PipePair : public sf::Drawable {
 /// six collection of `PipePair` classes.
 struct Pipes : public sf::Drawable {
     /// starting position of the first pipe in the 2D world.
-    static constexpr float START_X = static_cast<float>(WINDOW_WIDTH) * 0.75f;
+    static constexpr float START_X = static_cast<float>(WINDOW_WIDTH) * 0.45f;
 
     /// X axis space between each set of pipe pairs.
     static constexpr float DISTANCE = Pipe::WIDTH + 100.f;
