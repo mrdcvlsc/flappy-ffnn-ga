@@ -21,6 +21,7 @@
 #include "pipe.hpp"
 #include "gamestats.hpp"
 #include "collision.hpp"
+#include "genetic_algorithm.hpp"
 
 int main() {
     auto game_stats = std::make_shared<GameStats>();
@@ -42,6 +43,8 @@ int main() {
     Birds birds;
 
     Pipes pipes;
+
+    GeneticAlgorithm ga;
 
     while (window.isOpen()) {
         sf::Time dt = game_stats->fps_clock.restart();
@@ -85,13 +88,17 @@ int main() {
                 }
 
                 // bird jumps
-                // if (event.key.scancode == sf::Keyboard::Scan::Space) {
-                //     birds.jump();
-                // }
+                if (event.key.scancode == sf::Keyboard::Scan::Space) {
+                    for (auto &bird: birds.birds) {
+                        bird.jump();
+                    }
+                }
 
                 window.setView(game_view);
             }
         }
+
+        ga.get_inputs(birds, pipes);
 
         while (game_stats->timeSinceLastUpdate > GameStats::TIME_PER_FRAME) {
             game_stats->timeSinceLastUpdate -= GameStats::TIME_PER_FRAME;
