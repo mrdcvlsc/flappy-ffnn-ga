@@ -1,8 +1,5 @@
 #include <string>
 
-#include <SFML/Graphics/Text.hpp>
-
-#include "bird.hpp"
 #include "gamestats.hpp"
 
 const sf::Time GameStats::TIME_PER_FRAME = sf::seconds(1.f / static_cast<float>(GameStats::FRAME_LIMIT));

@@ -1,7 +1,6 @@
 #ifndef MRDCVLSC_COLLISION_HPP
 #define MRDCVLSC_COLLISION_HPP
 
-#include "config.hpp"
 #include "bird.hpp"
 #include "pipe.hpp"
 
