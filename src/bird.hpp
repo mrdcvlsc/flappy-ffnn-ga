@@ -2,6 +2,7 @@
 #define MRDCVLSC_BIRD_HPP
 
 #include <iostream>
+#include <algorithm>
 #include <chrono>
 #include <random>
 #include <vector>
@@ -32,6 +33,7 @@ struct Bird : public sf::RectangleShape {
 
     float        time_lived;
     float        speed;
+    float        fitness;
     bool         dead;
     FFNN         neural_net;
     sf::Vector2f last_pipe_gap;
@@ -40,6 +42,7 @@ struct Bird : public sf::RectangleShape {
 
     void jump();
     void update(float dt);
+    void reset();
 };
 
 struct Birds : public sf::Drawable {
@@ -53,7 +56,7 @@ struct Birds : public sf::Drawable {
     Birds();
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void         new_generation();
+    void         reset();
     void         update(float dt);
 };
 

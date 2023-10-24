@@ -1,15 +1,20 @@
-#include "bird.hpp"
+#include <ctime>
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 
+#include "bird.hpp"
+
 /////////////////////// Bird ///////////////////////
 
-Bird::Bird() : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), dead(false), neural_net() {
+Bird::Bird()
+    : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), fitness(0.f), dead(false),
+      neural_net() {
     setOrigin(getSize() * 0.5f);
     setFillColor(sf::Color::Red);
     setOutlineThickness(3.f);
     setOutlineColor(sf::Color::Black);
-    setPosition(START_X, START_Y);
+    reset();
 }
 
 void Bird::jump() {
@@ -34,19 +39,42 @@ void Bird::update(float dt) {
     }
 }
 
+void Bird::reset() {
+    time_lived = 0.f;
+    speed = JUMP_SPEED * 0.6f;
+    setPosition(START_X, START_Y);
+    dead = false;
+}
+
 /////////////////////// Birds ///////////////////////
 
 Birds::Birds()
     : birds(), population(Birds::INITIAL_POPULATION),
       engine(std::chrono::system_clock::now().time_since_epoch().count()), rng(0ULL, 100ULL) {
-    new_generation();
-}
 
-void Birds::new_generation() {
-    birds.clear();
     for (size_t i = 0; i < INITIAL_POPULATION; ++i) {
         birds.push_back(Bird());
     }
+
+    reset();
+}
+
+void Birds::reset() {
+    std::cout << "unsorted fitness :\n";
+    for (auto &bird: birds) {
+        std::cout << "  bird.fitness = " << bird.fitness << '\n';
+    }
+    std::cout << "\n";
+
+    std::sort(birds.begin(), birds.end(), [](Bird &a, Bird &b) { return a.fitness > b.fitness; });
+
+    std::cout << "sorted fitness :\n";
+    for (auto &bird: birds) {
+        std::cout << "  bird.fitness = " << bird.fitness << '\n';
+        bird.reset();
+    }
+    std::cout << "\n\n";
+
     population = INITIAL_POPULATION;
 }
 
