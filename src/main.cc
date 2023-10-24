@@ -123,9 +123,11 @@ int main() {
         window.display();
 
         if (birds.population == 0ULL) {
+            ga.calculate_fitness(birds);
+
             game_stats->new_generation();
             pipes.new_generation();
-            birds.new_generation();
+            birds.reset();
         }
 
         game_stats->update();
