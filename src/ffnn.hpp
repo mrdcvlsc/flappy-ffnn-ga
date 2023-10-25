@@ -16,6 +16,20 @@ struct FFNN {
     static constexpr size_t HIDDEN = 5;
     static constexpr size_t OUTPUT = 1;
 
+    /// \brief 20% chance to mutate a weight.
+    static constexpr size_t MUTATION_CHANCE_THRESHOLD = 20;
+
+    /// \brief 50% chance to choose from parentA's weight.
+    static constexpr size_t WEIGHT_SELECTION_CHANCE_THRESHOLD = 50;
+
+    static std::mt19937 engine;
+
+    /// \brief generates number from 1 to 100.
+    static std::uniform_int_distribution<size_t> random_chance;
+
+    /// \brief generates weight from -0.5 to 0.5.
+    static std::uniform_real_distribution<float> new_random_weight;
+
     Eigen::Matrix<float, INPUTS, 1>      input_layer;
     Eigen::Matrix<float, HIDDEN, INPUTS> w1;
 
@@ -33,6 +47,12 @@ struct FFNN {
     float feedforward();
 
     void update_inputs(float bird_pipe_distance, float bird_gap_distance);
+
+    /// \brief randomly mutate the current weights.
+    void mutate();
+
+    /// \brief overwrite the old weights with the weights of either network1 or network2 (50/50 random selection).
+    void combine(FFNN const &net1, FFNN const &net2);
 };
 
 #endif

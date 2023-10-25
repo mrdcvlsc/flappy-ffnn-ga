@@ -52,7 +52,7 @@ struct PipePair : public sf::Drawable {
     static constexpr float GAP = 110.f;
 
     /// top pipe's minimum height.
-    static constexpr float MIN_HEIGHT = static_cast<float>(WINDOW_HEIGHT) / 12.f;
+    static constexpr float MIN_HEIGHT = static_cast<float>(WINDOW_HEIGHT) / 24.f;
 
     /// top pipe's maximum height.
     static constexpr float MAX_HEIGHT = static_cast<float>(WINDOW_HEIGHT) - MIN_HEIGHT - GAP;

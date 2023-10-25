@@ -1,22 +1,25 @@
 #include "ffnn.hpp"
+#include <chrono>
+#include <random>
+
+std::mt19937                          FFNN::engine(std::chrono::system_clock::now().time_since_epoch().count());
+std::uniform_int_distribution<size_t> FFNN::random_chance(0U, 100U);
+std::uniform_real_distribution<float> FFNN::new_random_weight(-0.5f, 0.5f);
 
 FFNN::FFNN() : input_layer(), w1(), hidden_layer(), w2(), output_layer() {
     randomize_network();
 }
 
 void FFNN::randomize_network() {
-    std::mt19937                          engine(std::chrono::system_clock::now().time_since_epoch().count());
-    std::uniform_real_distribution<float> rng(-0.5f, 0.5f);
-
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
-            w1(i, j) = rng(engine);
+            w1(i, j) = new_random_weight(engine);
         }
     }
 
     for (size_t j = 0; j < HIDDEN; ++j) {
         for (size_t i = 0; i < OUTPUT; ++i) {
-            w2(i, j) = rng(engine);
+            w2(i, j) = new_random_weight(engine);
         }
     }
 }
@@ -44,4 +47,50 @@ float FFNN::feedforward() {
 void FFNN::update_inputs(float bird_pipe_distance, float bird_gap_distance) {
     input_layer(0, 0) = bird_pipe_distance;
     input_layer(1, 0) = bird_gap_distance;
+}
+
+void FFNN::mutate() {
+    // mutate weight 1
+    for (size_t j = 0; j < INPUTS; ++j) {
+        for (size_t i = 0; i < HIDDEN; ++i) {
+            size_t chance = random_chance(engine);
+            if (chance <= MUTATION_CHANCE_THRESHOLD) {
+                w1(i, j) = new_random_weight(engine);
+            }
+        }
+    }
+
+    for (size_t j = 0; j < HIDDEN; ++j) {
+        for (size_t i = 0; i < OUTPUT; ++i) {
+            size_t chance = random_chance(engine);
+            if (chance <= MUTATION_CHANCE_THRESHOLD) {
+                w2(i, j) = new_random_weight(engine);
+            }
+        }
+    }
+}
+
+void FFNN::combine(FFNN const &net1, FFNN const &net2) {
+    // mutate weight 1
+    for (size_t j = 0; j < INPUTS; ++j) {
+        for (size_t i = 0; i < HIDDEN; ++i) {
+            size_t chance = random_chance(engine);
+            if (chance <= WEIGHT_SELECTION_CHANCE_THRESHOLD) {
+                w1(i, j) = net1.w1(i, j);
+            } else {
+                w1(i, j) = net2.w1(i, j);
+            }
+        }
+    }
+
+    for (size_t j = 0; j < HIDDEN; ++j) {
+        for (size_t i = 0; i < OUTPUT; ++i) {
+            size_t chance = random_chance(engine);
+            if (chance <= WEIGHT_SELECTION_CHANCE_THRESHOLD) {
+                w2(i, j) = net1.w2(i, j);
+            } else {
+                w2(i, j) = net2.w2(i, j);
+            }
+        }
+    }
 }

@@ -1,3 +1,4 @@
+#include <chrono>
 #include <ctime>
 
 #include <SFML/Graphics/CircleShape.hpp>
@@ -7,11 +8,16 @@
 
 /////////////////////// Bird ///////////////////////
 
+sf::Vector2f Bird::target_gap = {0.f, 0.f};
+
+std::mt19937 Bird::color_engine(std::chrono::system_clock::now().time_since_epoch().count());
+std::uniform_int_distribution<unsigned char> Bird::color_rng(0, 255);
+
 Bird::Bird()
     : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), fitness(0.f), dead(false),
       neural_net() {
     setOrigin(getSize() * 0.5f);
-    setFillColor(sf::Color::Red);
+    setFillColor(sf::Color(color_rng(color_engine), color_rng(color_engine), color_rng(color_engine)));
     setOutlineThickness(3.f);
     setOutlineColor(sf::Color::Black);
     reset();
@@ -46,53 +52,54 @@ void Bird::reset() {
     dead = false;
 }
 
+void Bird::apply_random_mutation() {
+    neural_net.mutate();
+}
+
+void Bird::become_offspring(Bird const &parentA, Bird const &parentB) {
+    sf::Color new_color(
+      parentA.getFillColor().r | (parentB.getFillColor().r >> 4),
+      parentB.getFillColor().g | (parentA.getFillColor().g >> 4),
+      parentA.getFillColor().b | (parentB.getFillColor().b << 4)
+    );
+
+    setFillColor(new_color);
+    neural_net.combine(parentA.neural_net, parentB.neural_net);
+}
+
 /////////////////////// Birds ///////////////////////
 
-Birds::Birds()
-    : birds(), population(Birds::INITIAL_POPULATION),
-      engine(std::chrono::system_clock::now().time_since_epoch().count()), rng(0ULL, 100ULL) {
-
+Birds::Birds() : collection(), population(Birds::INITIAL_POPULATION) {
     for (size_t i = 0; i < INITIAL_POPULATION; ++i) {
-        birds.push_back(Bird());
+        collection.push_back(Bird());
     }
 
     reset();
 }
 
 void Birds::reset() {
-    std::cout << "unsorted fitness :\n";
-    for (auto &bird: birds) {
-        std::cout << "  bird.fitness = " << bird.fitness << '\n';
-    }
-    std::cout << "\n";
-
-    std::sort(birds.begin(), birds.end(), [](Bird &a, Bird &b) { return a.fitness > b.fitness; });
-
-    std::cout << "sorted fitness :\n";
-    for (auto &bird: birds) {
-        std::cout << "  bird.fitness = " << bird.fitness << '\n';
+    for (auto &bird: collection) {
         bird.reset();
     }
-    std::cout << "\n\n";
 
     population = INITIAL_POPULATION;
 }
 
 void Birds::update(float dt) {
-    for (auto &bird: birds) {
+    for (auto &bird: collection) {
         bird.update(dt);
     }
 }
 
 void Birds::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    for (auto &bird: birds) {
+    for (auto &bird: collection) {
         if (!bird.dead) {
             target.draw(bird, states);
 
             // a note to self : for debugging purposes / remove later
             sf::CircleShape test(5.f, 3);
             test.setFillColor(sf::Color::Yellow);
-            test.setPosition(bird.last_pipe_gap);
+            test.setPosition(Bird::target_gap);
             target.draw(test, states);
         }
     }

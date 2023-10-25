@@ -31,33 +31,43 @@ struct Bird : public sf::RectangleShape {
     /// Gravitation acceleration.
     static constexpr float GRAVITY = 700.f;
 
-    float        time_lived;
-    float        speed;
-    float        fitness;
-    bool         dead;
-    FFNN         neural_net;
-    sf::Vector2f last_pipe_gap;
+    /// The current `Pipe` gap that the bird needs to jump over.
+    static sf::Vector2f target_gap;
+
+    static std::mt19937                                 color_engine;
+    static std::uniform_int_distribution<unsigned char> color_rng;
+
+    float time_lived;
+    float speed;
+    float fitness;
+    bool  dead;
+    FFNN  neural_net;
 
     Bird();
 
     void jump();
     void update(float dt);
     void reset();
+    void apply_random_mutation();
+    void become_offspring(Bird const &parentA, Bird const &parentB);
 };
 
 struct Birds : public sf::Drawable {
     static constexpr size_t INITIAL_POPULATION = 60;
 
-    std::vector<Bird>                     birds;
-    size_t                                population;
-    std::mt19937                          engine;
-    std::uniform_int_distribution<size_t> rng;
+    std::vector<Bird> collection;
+    size_t            population;
 
     Birds();
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void         reset();
-    void         update(float dt);
+
+    /// \brief resets the value of the members; `time_lived`, `speed`, `dead` and "starting position" of all the `Bird`
+    /// in the `Birds` collection to their initial values, then sets the `population` member of the `Birds` class to the
+    /// `INITAIL_POPULATION`.
+    void reset();
+
+    void update(float dt);
 };
 
 #endif
