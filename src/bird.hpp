@@ -53,7 +53,7 @@ struct Bird : public sf::RectangleShape {
 };
 
 struct Birds : public sf::Drawable {
-    static constexpr size_t INITIAL_POPULATION = 60;
+    static constexpr size_t INITIAL_POPULATION = 512;
 
     std::vector<Bird> collection;
     size_t            population;

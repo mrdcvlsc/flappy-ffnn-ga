@@ -49,20 +49,7 @@ void GeneticAlgorithm::rank_fitness(Birds &birds) {
         bird.fitness = base_gap_close_fitness + bird.time_lived * 20.f;
     }
 
-    // sort birds from greatest to least fitness.
-    std::cout << "unsorted fitness :\n";
-    for (auto &bird: birds.collection) {
-        std::cout << "  bird.fitness = " << bird.fitness << '\n';
-    }
-    std::cout << "\n";
-
     std::sort(birds.collection.begin(), birds.collection.end(), [](Bird &a, Bird &b) { return a.fitness > b.fitness; });
-
-    std::cout << "sorted fitness :\n";
-    for (auto &bird: birds.collection) {
-        std::cout << "  bird.fitness = " << bird.fitness << '\n';
-    }
-    std::cout << "\n\n";
 }
 
 void GeneticAlgorithm::apply_mutations(Birds &birds) {
@@ -72,20 +59,7 @@ void GeneticAlgorithm::apply_mutations(Birds &birds) {
         birds.collection[i].apply_random_mutation();
     }
 
-    // randomly select mutated bad birds to keep.
-    std::cout << "sorted bad bird fitness :\n";
-    for (auto &bird: birds.collection) {
-        std::cout << "  bird.fitness = " << bird.fitness << '\n';
-    }
-    std::cout << "\n";
-
     std::shuffle(birds.collection.begin() + fit_size, birds.collection.end(), FFNN::engine);
-
-    std::cout << "shuffled bad bird fitness :\n";
-    for (auto &bird: birds.collection) {
-        std::cout << "  bird.fitness = " << bird.fitness << '\n';
-    }
-    std::cout << "\n";
 
     // breed the good birds to fill the missing population.
     constexpr size_t unfit_size = (Birds::INITIAL_POPULATION - fit_size) * MUTATION_KEEP_BAD;

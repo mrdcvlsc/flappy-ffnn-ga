@@ -16,8 +16,8 @@ struct FFNN {
     static constexpr size_t HIDDEN = 5;
     static constexpr size_t OUTPUT = 1;
 
-    /// \brief 20% chance to mutate a weight.
-    static constexpr size_t MUTATION_CHANCE_THRESHOLD = 20;
+    /// \brief 30% chance to mutate a weight.
+    static constexpr size_t MUTATION_CHANCE_THRESHOLD = 30;
 
     /// \brief 50% chance to choose from parentA's weight.
     static constexpr size_t WEIGHT_SELECTION_CHANCE_THRESHOLD = 50;

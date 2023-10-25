@@ -95,12 +95,6 @@ void Birds::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     for (auto &bird: collection) {
         if (!bird.dead) {
             target.draw(bird, states);
-
-            // a note to self : for debugging purposes / remove later
-            sf::CircleShape test(5.f, 3);
-            test.setFillColor(sf::Color::Yellow);
-            test.setPosition(Bird::target_gap);
-            target.draw(test, states);
         }
     }
 }
