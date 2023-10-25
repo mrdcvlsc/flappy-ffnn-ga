@@ -34,8 +34,8 @@ struct Bird : public sf::RectangleShape {
     /// The current `Pipe` gap that the bird needs to jump over.
     static sf::Vector2f target_gap;
 
-    static std::mt19937                                 color_engine;
-    static std::uniform_int_distribution<unsigned char> color_rng;
+    static std::mt19937                          color_engine;
+    static std::uniform_int_distribution<size_t> color_rng;
 
     float time_lived;
     float speed;

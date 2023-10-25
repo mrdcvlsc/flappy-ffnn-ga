@@ -28,7 +28,8 @@ void GeneticAlgorithm::get_inputs(Birds &birds, Pipes const &pipes) {
 
         // normalize the input 2 of the neural network
         float bird_position_y_range = (WINDOW_HEIGHT - Bird::SIZE / 2.f) - (Bird::SIZE / 2.f);
-        float input2_normalized = (Bird::target_gap.y - bird.getPosition().y + bird_position_y_range) / bird_position_y_range * 2.f;
+        float input2_normalized =
+          (Bird::target_gap.y - bird.getPosition().y + bird_position_y_range) / bird_position_y_range * 2.f;
 
         // feed the normalized input to the network and apply feedforward.
         bird.neural_net.update_inputs(std::abs(input1_normalized), input2_normalized);

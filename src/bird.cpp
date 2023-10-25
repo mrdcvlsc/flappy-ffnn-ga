@@ -10,8 +10,8 @@
 
 sf::Vector2f Bird::target_gap = {0.f, 0.f};
 
-std::mt19937 Bird::color_engine(std::chrono::system_clock::now().time_since_epoch().count());
-std::uniform_int_distribution<unsigned char> Bird::color_rng(0, 255);
+std::mt19937                          Bird::color_engine(std::chrono::system_clock::now().time_since_epoch().count());
+std::uniform_int_distribution<size_t> Bird::color_rng(0, 255);
 
 Bird::Bird()
     : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), fitness(0.f), dead(false),
