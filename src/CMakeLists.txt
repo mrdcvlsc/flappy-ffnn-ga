@@ -1,7 +1,9 @@
 # FOR PRODUCTION
 
 cmake_minimum_required(VERSION 3.21)
-project(flappy-ffnn-ga LANGUAGES CXX)
+project(flappy_ffnn_ga LANGUAGES CXX)
+
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 include(FetchContent)
 
@@ -34,15 +36,23 @@ include_directories(Eigen-3.4.0/include)
 
 file(GLOB SOURCES "*.cpp")
 
-add_executable(flappy-ffnn-ga main.cc ${SOURCES})
+add_executable(flappy_ffnn_ga main.cc ${SOURCES})
 
-target_link_libraries(flappy-ffnn-ga PRIVATE sfml-graphics sfml-window Eigen3::Eigen)
+target_link_libraries(flappy_ffnn_ga PRIVATE sfml-graphics sfml-window Eigen3::Eigen)
 
-target_compile_features(flappy-ffnn-ga PRIVATE cxx_std_20)
+target_compile_features(flappy_ffnn_ga PRIVATE cxx_std_17)
 
 if (WIN32 AND BUILD_SHARED_LIBS)
-    add_custom_command(TARGET flappy-ffnn-ga POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:flappy-ffnn-ga> $<TARGET_FILE_DIR:flappy-ffnn-ga> COMMAND_EXPAND_LISTS)
+    add_custom_command(TARGET flappy_ffnn_ga POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:flappy_ffnn_ga> $<TARGET_FILE_DIR:flappy_ffnn_ga> COMMAND_EXPAND_LISTS)
 endif()
+
+# if(WIN32)
+#     add_custom_command(
+#         TARGET CMakeSFMLProject
+#         COMMENT "Copy OpenAL DLL"
+#         PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:CMakeSFMLProject>
+#         VERBATIM)
+# endif()
 
 file(COPY calibril.ttf DESTINATION ${CMAKE_BINARY_DIR})
