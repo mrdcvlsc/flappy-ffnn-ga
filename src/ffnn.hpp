@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <cmath>
 
-#include <eigen3/Eigen/Core>
+#include <Eigen/Core>
 
 /// \brief Feed-Forward Neural Network (2x5x1).
 struct FFNN {
