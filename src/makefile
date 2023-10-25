@@ -8,20 +8,39 @@ WFLAGS:=-Wall -Wextra -Wpedantic
 DFLAGS:=-g3 -fsanitize=address
 
 SRC:=$(wildcard *.cpp)
-OBJ=$(SRC:.cpp=.o)
+# OBJ:=$(SRC:.cpp=.o)
+OBJ:=ffnn.o pipe.o bird.o collision.o genetic_algo.o gamestats.o
 BIN_OUT:=flappy.out
 
 run: $(BIN_OUT)
 	./$(BIN_OUT)
 
-$(BIN_OUT): main.o config.hpp $(OBJ)
-	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) main.o $(OBJ) -o $(BIN_OUT) $(LIBS) $(DFLAGS))
+$(BIN_OUT): main.cc $(OBJ)
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) main.cc $(OBJ) -o $(BIN_OUT) $(LIBS) $(DFLAGS))
 
-main.o : main.cc
-	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c main.cc -o main.o $(DFLAGS))
+######################## dependent targets ########################
 
-$(OBJ): %.o : %.cpp %.hpp
+gamestats.o : gamestats.cpp gamestats.hpp bird.o
 	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
+
+genetic_algo.o : genetic_algo.cpp genetic_algo.hpp bird.o pipe.o
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
+
+collision.o : collision.cpp collision.hpp bird.o pipe.o
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
+
+bird.o : bird.cpp bird.hpp config.hpp ffnn.o
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
+
+######################## independent targets ########################
+
+ffnn.o : ffnn.cpp ffnn.hpp
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
+
+pipe.o : pipe.cpp pipe.hpp config.hpp
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
+
+######################## other targets ########################
 
 clean:
 	rm *.out *.o *.exe
