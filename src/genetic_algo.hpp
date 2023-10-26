@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 
+#include "config.hpp"
 #include "bird.hpp"
 #include "pipe.hpp"
 

@@ -5,8 +5,8 @@
 const sf::Time GameStats::TIME_PER_FRAME = sf::seconds(1.f / static_cast<float>(GameStats::FRAME_LIMIT));
 
 GameStats::GameStats()
-    : generation(1u), current_population(Birds::INITIAL_POPULATION), total_population(Birds::INITIAL_POPULATION),
-      fps(0.f), game_clock(), fps_clock(), timeSinceLastUpdate(sf::Time::Zero) {
+    : game_clock(), fps_clock(), timeSinceLastUpdate(sf::Time::Zero), generation(1u),
+      current_population(Birds::INITIAL_POPULATION), total_population(Birds::INITIAL_POPULATION), fps(0.f) {
     if (!m_font.loadFromFile("calibril.ttf")) {
         throw std::runtime_error("Error loading calibril.ttf");
     }

@@ -19,10 +19,11 @@ class GameStats : public sf::Drawable {
 
     static const sf::Time TIME_PER_FRAME;
 
-    unsigned int generation, current_population, total_population;
-    float        fps;
-    sf::Clock    game_clock, fps_clock;
-    sf::Time     timeSinceLastUpdate;
+    sf::Clock game_clock, fps_clock;
+    sf::Time  timeSinceLastUpdate;
+
+    size_t generation, current_population, total_population;
+    float  fps;
 
     GameStats();
 

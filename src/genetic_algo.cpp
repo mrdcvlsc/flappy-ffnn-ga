@@ -1,9 +1,7 @@
-#include "bird.hpp"
-#include "config.hpp"
-#include "ffnn.hpp"
-#include "genetic_algo.hpp"
 #include <algorithm>
 #include <iterator>
+
+#include "genetic_algo.hpp"
 
 void GeneticAlgorithm::get_inputs(Birds &birds, Pipes const &pipes) {
     // calculate front/last pipe gap position.
@@ -59,7 +57,7 @@ void GeneticAlgorithm::apply_mutations(Birds &birds) {
         birds.collection[i].apply_random_mutation();
     }
 
-    std::shuffle(birds.collection.begin() + fit_size, birds.collection.end(), FFNN::engine);
+    std::shuffle(birds.collection.begin() + fit_size, birds.collection.end(), rand_engine);
 
     // breed the good birds to fill the missing population.
     constexpr size_t unfit_size = (Birds::INITIAL_POPULATION - fit_size) * MUTATION_KEEP_BAD;

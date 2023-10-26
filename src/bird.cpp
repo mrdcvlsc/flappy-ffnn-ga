@@ -10,14 +10,13 @@
 
 sf::Vector2f Bird::target_gap = {0.f, 0.f};
 
-std::mt19937                          Bird::color_engine(std::chrono::system_clock::now().time_since_epoch().count());
-std::uniform_int_distribution<size_t> Bird::color_rng(0, 255);
+std::uniform_int_distribution<size_t> Bird::rand_color(0, 255);
 
 Bird::Bird()
-    : sf::RectangleShape({SIZE, SIZE}), time_lived(0.f), speed(JUMP_SPEED * 0.6f), fitness(0.f), dead(false),
-      neural_net() {
+    : sf::RectangleShape({SIZE, SIZE}), neural_net(), time_lived(0.f), speed(JUMP_SPEED * 0.6f), fitness(0.f),
+      dead(false) {
     setOrigin(getSize() * 0.5f);
-    setFillColor(sf::Color(color_rng(color_engine), color_rng(color_engine), color_rng(color_engine)));
+    setFillColor(sf::Color(rand_color(rand_engine), rand_color(rand_engine), rand_color(rand_engine)));
     setOutlineThickness(3.f);
     setOutlineColor(sf::Color::Black);
     reset();
@@ -56,15 +55,11 @@ void Bird::apply_random_mutation() {
     neural_net.mutate();
 }
 
-void Bird::become_offspring(Bird const &parentA, Bird const &parentB) {
-    sf::Color new_color(
-      parentA.getFillColor().r | (parentB.getFillColor().r >> 4),
-      parentB.getFillColor().g | (parentA.getFillColor().g >> 4),
-      parentA.getFillColor().b | (parentB.getFillColor().b << 4)
-    );
+void Bird::become_offspring(Bird const &b1, Bird const &b2) {
+    sf::Color new_color(b1.getFillColor().r, b2.getFillColor().g, (b1.getFillColor().b + b2.getFillColor().b) % 256);
 
     setFillColor(new_color);
-    neural_net.combine(parentA.neural_net, parentB.neural_net);
+    neural_net.combine(b1.neural_net, b2.neural_net);
 }
 
 /////////////////////// Birds ///////////////////////

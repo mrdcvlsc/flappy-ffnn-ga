@@ -1,8 +1,5 @@
 #include "ffnn.hpp"
-#include <chrono>
-#include <random>
 
-std::mt19937                          FFNN::engine(std::chrono::system_clock::now().time_since_epoch().count());
 std::uniform_int_distribution<size_t> FFNN::random_chance(0U, 100U);
 std::uniform_real_distribution<float> FFNN::new_random_weight(-0.5f, 0.5f);
 
@@ -13,13 +10,13 @@ FFNN::FFNN() : input_layer(), w1(), hidden_layer(), w2(), output_layer() {
 void FFNN::randomize_network() {
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
-            w1(i, j) = new_random_weight(engine);
+            w1(i, j) = new_random_weight(rand_engine);
         }
     }
 
     for (size_t j = 0; j < HIDDEN; ++j) {
         for (size_t i = 0; i < OUTPUT; ++i) {
-            w2(i, j) = new_random_weight(engine);
+            w2(i, j) = new_random_weight(rand_engine);
         }
     }
 }
@@ -53,18 +50,18 @@ void FFNN::mutate() {
     // mutate weight 1
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
-            size_t chance = random_chance(engine);
+            size_t chance = random_chance(rand_engine);
             if (chance <= MUTATION_CHANCE_THRESHOLD) {
-                w1(i, j) = new_random_weight(engine);
+                w1(i, j) = new_random_weight(rand_engine);
             }
         }
     }
 
     for (size_t j = 0; j < HIDDEN; ++j) {
         for (size_t i = 0; i < OUTPUT; ++i) {
-            size_t chance = random_chance(engine);
+            size_t chance = random_chance(rand_engine);
             if (chance <= MUTATION_CHANCE_THRESHOLD) {
-                w2(i, j) = new_random_weight(engine);
+                w2(i, j) = new_random_weight(rand_engine);
             }
         }
     }
@@ -74,7 +71,7 @@ void FFNN::combine(FFNN const &net1, FFNN const &net2) {
     // mutate weight 1
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
-            size_t chance = random_chance(engine);
+            size_t chance = random_chance(rand_engine);
             if (chance <= WEIGHT_SELECTION_CHANCE_THRESHOLD) {
                 w1(i, j) = net1.w1(i, j);
             } else {
@@ -85,7 +82,7 @@ void FFNN::combine(FFNN const &net1, FFNN const &net2) {
 
     for (size_t j = 0; j < HIDDEN; ++j) {
         for (size_t i = 0; i < OUTPUT; ++i) {
-            size_t chance = random_chance(engine);
+            size_t chance = random_chance(rand_engine);
             if (chance <= WEIGHT_SELECTION_CHANCE_THRESHOLD) {
                 w2(i, j) = net1.w2(i, j);
             } else {

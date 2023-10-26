@@ -10,6 +10,8 @@
 
 #include <Eigen/Core>
 
+#include "config.hpp"
+
 /// \brief Feed-Forward Neural Network (2x5x1).
 struct FFNN {
     static constexpr size_t INPUTS = 2;
@@ -21,8 +23,6 @@ struct FFNN {
 
     /// \brief 50% chance to choose from parentA's weight.
     static constexpr size_t WEIGHT_SELECTION_CHANCE_THRESHOLD = 50;
-
-    static std::mt19937 engine;
 
     /// \brief generates number from 1 to 100.
     static std::uniform_int_distribution<size_t> random_chance;

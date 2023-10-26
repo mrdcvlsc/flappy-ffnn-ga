@@ -34,14 +34,13 @@ struct Bird : public sf::RectangleShape {
     /// The current `Pipe` gap that the bird needs to jump over.
     static sf::Vector2f target_gap;
 
-    static std::mt19937                          color_engine;
-    static std::uniform_int_distribution<size_t> color_rng;
+    static std::uniform_int_distribution<size_t> rand_color;
 
+    FFNN  neural_net;
     float time_lived;
     float speed;
     float fitness;
     bool  dead;
-    FFNN  neural_net;
 
     Bird();
 
@@ -49,7 +48,7 @@ struct Bird : public sf::RectangleShape {
     void update(float dt);
     void reset();
     void apply_random_mutation();
-    void become_offspring(Bird const &parentA, Bird const &parentB);
+    void become_offspring(Bird const &b1, Bird const &b2);
 };
 
 struct Birds : public sf::Drawable {

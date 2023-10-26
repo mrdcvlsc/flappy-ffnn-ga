@@ -34,7 +34,7 @@ bird.o : bird.cpp bird.hpp config.hpp ffnn.o
 
 ######################## independent targets ########################
 
-ffnn.o : ffnn.cpp ffnn.hpp
+ffnn.o : ffnn.cpp ffnn.hpp config.hpp
 	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
 
 pipe.o : pipe.cpp pipe.hpp config.hpp

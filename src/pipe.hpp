@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <array>
-#include <chrono>
-#include <random>
 
 #include <cstddef>
 #include <cstdint>
@@ -83,8 +81,7 @@ struct Pipes : public sf::Drawable {
 
     std::array<PipePair, COUNT> pairs;
 
-    std::mt19937                          engine;
-    std::uniform_real_distribution<float> rng;
+    std::uniform_real_distribution<float> rand_height;
 
     /// Current front pipe index.
     size_t front_pipe;

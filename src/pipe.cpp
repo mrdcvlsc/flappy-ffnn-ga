@@ -1,4 +1,5 @@
 #include "pipe.hpp"
+#include "config.hpp"
 
 ////////////////////////// Pipe //////////////////////////
 
@@ -53,11 +54,9 @@ void PipePair::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
 ////////////////////////// Pipes //////////////////////////
 
-Pipes::Pipes()
-    : engine(std::chrono::system_clock::now().time_since_epoch().count()),
-      rng(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_pipe(0ULL) {
+Pipes::Pipes() : rand_height(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_pipe(0ULL) {
     for (size_t i = 0; i < COUNT; ++i) {
-        pairs[i] = PipePair(START_X + i * DISTANCE, rng(engine));
+        pairs[i] = PipePair(START_X + i * DISTANCE, rand_height(rand_engine));
     }
 }
 
@@ -78,7 +77,7 @@ void Pipes::update(float tick) {
             pairs[index].set_pos(pairs[back_index].getPosition().x + DISTANCE);
 
             // generate new heights for the pipe that was moved to the back.
-            float top_height = rng(engine);
+            float top_height = rand_height(rand_engine);
             pairs[index].top.setSize({Pipe::WIDTH, top_height});
             pairs[index].btm.setSize({Pipe::WIDTH, static_cast<float>(WINDOW_HEIGHT) - top_height - PipePair::GAP});
             pairs[index].btm.setPosition(pairs[index].btm.getPosition().x, top_height + PipePair::GAP);
@@ -94,6 +93,6 @@ void Pipes::update(float tick) {
 void Pipes::new_generation() {
     front_pipe = 0ULL;
     for (size_t i = 0; i < COUNT; ++i) {
-        pairs[i] = PipePair(START_X + i * DISTANCE, rng(engine));
+        pairs[i] = PipePair(START_X + i * DISTANCE, rand_height(rand_engine));
     }
 }
