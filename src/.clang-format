@@ -5,28 +5,14 @@ IndentWidth: 4
 Language: Cpp
 
 UseTab: Never
-TabWidth: 2
 AlignConsecutiveDeclarations: true
 ContinuationIndentWidth: 2
 
-# LINES
+# # LINES
 AllowShortEnumsOnASingleLine: true
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: Yes
 EmptyLineAfterAccessModifier: Always
-
-# BRACE WRAPPINGS
-BraceWrapping:
-    AfterControlStatement: Never
-    AfterNamespace: false
-    AfterStruct: false
-    AfterUnion: false
-    AfterFunction: false
-    AfterClass: false
-    BeforeCatch: false
-    BeforeElse: false
-    BeforeWhile: false
-#    AfterCaseLabel: false
 
 # INDENTATIONS
 AlignAfterOpenBracket: BlockIndent
@@ -42,3 +28,13 @@ SpaceBeforeRangeBasedForLoopColon: false
 SpaceAfterCStyleCast: true
 
 SortIncludes: false
+
+# # CONSTRUCTORS
+BreakConstructorInitializers: AfterColon
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+AllowAllConstructorInitializersOnNextLine: false
+
+# BRACE WRAPPINGS
+BraceWrapping:
+    AfterControlStatement: Never
+    BeforeElse: false

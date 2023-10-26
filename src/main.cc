@@ -23,7 +23,8 @@
 #include "collision.hpp"
 #include "genetic_algo.hpp"
 
-int main() {
+int main()
+{
     auto game_stats = std::make_shared<GameStats>();
 
     sf::View           game_view(sf::FloatRect(0.f, 0.f, WINDOW_WIDTH, WINDOW_HEIGHT));

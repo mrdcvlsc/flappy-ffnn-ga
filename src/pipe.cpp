@@ -3,10 +3,12 @@
 
 ////////////////////////// Pipe //////////////////////////
 
-Pipe::Pipe() {
+Pipe::Pipe()
+{
 }
 
-Pipe::Pipe(float height, float x_pos, pipe_type position) : sf::RectangleShape({WIDTH, height}), position(position) {
+Pipe::Pipe(float height, float x_pos, pipe_type position) : sf::RectangleShape({WIDTH, height}), position(position)
+{
     setFillColor(sf::Color::Green);
     setOutlineColor(sf::Color::Black);
     setOutlineThickness(3.f);
@@ -19,55 +21,65 @@ Pipe::Pipe(float height, float x_pos, pipe_type position) : sf::RectangleShape({
 }
 
 /// \param tick elapsed per frame.
-void Pipe::update(float tick) {
+void Pipe::update(float tick)
+{
     move({-tick * SPEED, 0});
 }
 
 ////////////////////////// PipePair //////////////////////////
 
-PipePair::PipePair(float pos_x, float top_height) {
+PipePair::PipePair(float pos_x, float top_height)
+{
     top = Pipe(top_height, pos_x, pipe_type::top);
     btm = Pipe(static_cast<float>(WINDOW_HEIGHT) - top_height - GAP, pos_x, pipe_type::bottom);
 }
 
-PipePair::PipePair() : PipePair(0.f, 0.f) {
+PipePair::PipePair() : PipePair(0.f, 0.f)
+{
 }
 
-void PipePair::update(float tick) {
+void PipePair::update(float tick)
+{
     top.update(tick);
     btm.update(tick);
 }
 
-void PipePair::set_pos(float pos_x) {
+void PipePair::set_pos(float pos_x)
+{
     top.setPosition(pos_x, top.getPosition().y);
     btm.setPosition(pos_x, btm.getPosition().y);
 }
 
-const sf::Vector2f &PipePair::getPosition() const {
+const sf::Vector2f &PipePair::getPosition() const
+{
     return top.getPosition();
 }
 
-void PipePair::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void PipePair::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
     target.draw(top, states);
     target.draw(btm, states);
 }
 
 ////////////////////////// Pipes //////////////////////////
 
-Pipes::Pipes() : rand_height(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_pipe(0ULL) {
+Pipes::Pipes() : rand_height(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_pipe(0ULL)
+{
     for (size_t i = 0; i < COUNT; ++i) {
         pairs[i] = PipePair(START_X + i * DISTANCE, rand_height(rand_engine));
     }
 }
 
-void Pipes::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void Pipes::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
     for (PipePair const &pipe_pair: pairs) {
         target.draw(pipe_pair, states);
     }
 }
 
 /// \param tick elapsed per frame.
-void Pipes::update(float tick) {
+void Pipes::update(float tick)
+{
     size_t new_front_pipe = front_pipe;
     for (size_t i = 0; i < COUNT; ++i) {
         size_t index = (front_pipe + i) % COUNT;
@@ -90,7 +102,8 @@ void Pipes::update(float tick) {
     front_pipe = new_front_pipe;
 }
 
-void Pipes::new_generation() {
+void Pipes::new_generation()
+{
     front_pipe = 0ULL;
     for (size_t i = 0; i < COUNT; ++i) {
         pairs[i] = PipePair(START_X + i * DISTANCE, rand_height(rand_engine));

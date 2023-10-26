@@ -6,7 +6,8 @@
 #include "config.hpp"
 #include "collision.hpp"
 
-size_t bird_collision(Bird &bird, Pipes const &pipes) {
+size_t bird_collision(Bird &bird, Pipes const &pipes)
+{
     if (bird.dead) {
         return 0;
     }
@@ -36,7 +37,8 @@ size_t bird_collision(Bird &bird, Pipes const &pipes) {
     return (bird.dead = hit_floor | hit_top_pipe1 | hit_top_pipe2 | hit_btm_pipe1 | hit_btm_pipe2);
 }
 
-size_t birds_collisions(Birds &birds, Pipes const &pipes) {
+size_t birds_collisions(Birds &birds, Pipes const &pipes)
+{
     size_t deaths = 0ULL;
     for (auto &bird: birds.collection) {
         deaths += bird_collision(bird, pipes);

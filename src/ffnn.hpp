@@ -13,7 +13,8 @@
 #include "config.hpp"
 
 /// \brief Feed-Forward Neural Network (2x5x1).
-struct FFNN {
+struct FFNN
+{
     static constexpr size_t INPUTS = 2;
     static constexpr size_t HIDDEN = 5;
     static constexpr size_t OUTPUT = 1;

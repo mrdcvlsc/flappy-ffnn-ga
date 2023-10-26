@@ -15,7 +15,8 @@
 #include "config.hpp"
 #include "ffnn.hpp"
 
-struct Bird : public sf::RectangleShape {
+struct Bird : public sf::RectangleShape
+{
     /// Default bird side dimension length (SIZE x SIZE).
     static constexpr float SIZE = 20.f;
 
@@ -51,7 +52,8 @@ struct Bird : public sf::RectangleShape {
     void become_offspring(Bird const &b1, Bird const &b2);
 };
 
-struct Birds : public sf::Drawable {
+struct Birds : public sf::Drawable
+{
     static constexpr size_t INITIAL_POPULATION = 512;
 
     std::vector<Bird> collection;

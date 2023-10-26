@@ -15,7 +15,8 @@
 #include "config.hpp"
 
 template <typename T>
-constexpr T mod(T n, T M) {
+constexpr T mod(T n, T M)
+{
     return ((n % M) + M) % M;
 }
 
@@ -27,7 +28,8 @@ enum class pipe_type
 
 ////////////////////////// Pipe //////////////////////////
 
-struct Pipe : public sf::RectangleShape {
+struct Pipe : public sf::RectangleShape
+{
     /// Default wideness of a pipe in pixel.
     static constexpr float WIDTH = 30.f;
 
@@ -45,7 +47,8 @@ struct Pipe : public sf::RectangleShape {
 
 ////////////////////////// PipePair //////////////////////////
 
-struct PipePair : public sf::Drawable {
+struct PipePair : public sf::Drawable
+{
     /// Y axis space between two pair of pipes.
     static constexpr float GAP = 110.f;
 
@@ -70,7 +73,8 @@ struct PipePair : public sf::Drawable {
 ////////////////////////// Pipes //////////////////////////
 
 /// six collection of `PipePair` classes.
-struct Pipes : public sf::Drawable {
+struct Pipes : public sf::Drawable
+{
     /// starting position of the first pipe in the 2D world.
     static constexpr float START_X = static_cast<float>(WINDOW_WIDTH) * 0.45f;
 

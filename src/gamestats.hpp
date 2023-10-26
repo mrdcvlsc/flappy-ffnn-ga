@@ -11,7 +11,8 @@
 
 #include "bird.hpp"
 
-class GameStats : public sf::Drawable {
+class GameStats : public sf::Drawable
+{
     public:
 
     static constexpr size_t FRAME_LIMIT = 30;

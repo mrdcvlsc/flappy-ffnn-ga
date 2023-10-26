@@ -4,9 +4,15 @@
 
 const sf::Time GameStats::TIME_PER_FRAME = sf::seconds(1.f / static_cast<float>(GameStats::FRAME_LIMIT));
 
-GameStats::GameStats()
-    : game_clock(), fps_clock(), timeSinceLastUpdate(sf::Time::Zero), generation(1u),
-      current_population(Birds::INITIAL_POPULATION), total_population(Birds::INITIAL_POPULATION), fps(0.f) {
+GameStats::GameStats() :
+    game_clock(),
+    fps_clock(),
+    timeSinceLastUpdate(sf::Time::Zero),
+    generation(1u),
+    current_population(Birds::INITIAL_POPULATION),
+    total_population(Birds::INITIAL_POPULATION),
+    fps(0.f)
+{
     if (!m_font.loadFromFile("calibril.ttf")) {
         throw std::runtime_error("Error loading calibril.ttf");
     }
@@ -33,7 +39,8 @@ GameStats::GameStats()
     );
 }
 
-void GameStats::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void GameStats::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
     target.draw(m_fps_txt, states);
     target.draw(m_time_txt, states);
     target.draw(m_generation_txt, states);
@@ -42,21 +49,24 @@ void GameStats::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
 /// \brief calculate current FPS & Game Time.
 /// \warning STRICTLY SHOULD ONLY BE CALLED AT THE VERY END OF A FRAME!.
-void GameStats::update() {
+void GameStats::update()
+{
     m_fps_txt.setString("FPS : " + std::to_string(static_cast<unsigned int>(fps)));
     m_time_txt.setString("Game Time : " + std::to_string(game_clock.getElapsedTime().asSeconds()));
     fps = 1.f / fps_clock.getElapsedTime().asMilliseconds() * 1000.f;
 }
 
 /// \brief updates the population text display.
-void GameStats::population_update(size_t deaths) {
+void GameStats::population_update(size_t deaths)
+{
     current_population -= deaths;
     m_population_txt.setString(
       "Population : " + std::to_string(current_population) + '/' + std::to_string(total_population)
     );
 }
 
-void GameStats::new_generation() {
+void GameStats::new_generation()
+{
     generation++;
     m_generation_txt.setString("Generation : " + std::to_string(generation));
 

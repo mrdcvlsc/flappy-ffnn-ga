@@ -12,9 +12,14 @@ sf::Vector2f Bird::target_gap = {0.f, 0.f};
 
 std::uniform_int_distribution<size_t> Bird::rand_color(0, 255);
 
-Bird::Bird()
-    : sf::RectangleShape({SIZE, SIZE}), neural_net(), time_lived(0.f), speed(JUMP_SPEED * 0.6f), fitness(0.f),
-      dead(false) {
+Bird::Bird() :
+    sf::RectangleShape({SIZE, SIZE}),
+    neural_net(),
+    time_lived(0.f),
+    speed(JUMP_SPEED * 0.6f),
+    fitness(0.f),
+    dead(false)
+{
     setOrigin(getSize() * 0.5f);
     setFillColor(sf::Color(rand_color(rand_engine), rand_color(rand_engine), rand_color(rand_engine)));
     setOutlineThickness(3.f);
@@ -22,11 +27,13 @@ Bird::Bird()
     reset();
 }
 
-void Bird::jump() {
+void Bird::jump()
+{
     speed = JUMP_SPEED;
 }
 
-void Bird::update(float dt) {
+void Bird::update(float dt)
+{
     if (!dead) {
         time_lived += dt;
 
@@ -44,18 +51,21 @@ void Bird::update(float dt) {
     }
 }
 
-void Bird::reset() {
+void Bird::reset()
+{
     time_lived = 0.f;
     speed = JUMP_SPEED * 0.6f;
     setPosition(START_X, START_Y);
     dead = false;
 }
 
-void Bird::apply_random_mutation() {
+void Bird::apply_random_mutation()
+{
     neural_net.mutate();
 }
 
-void Bird::become_offspring(Bird const &b1, Bird const &b2) {
+void Bird::become_offspring(Bird const &b1, Bird const &b2)
+{
     sf::Color new_color(b1.getFillColor().r, b2.getFillColor().g, (b1.getFillColor().b + b2.getFillColor().b) % 256);
 
     setFillColor(new_color);
@@ -64,7 +74,8 @@ void Bird::become_offspring(Bird const &b1, Bird const &b2) {
 
 /////////////////////// Birds ///////////////////////
 
-Birds::Birds() : collection(), population(Birds::INITIAL_POPULATION) {
+Birds::Birds() : collection(), population(Birds::INITIAL_POPULATION)
+{
     for (size_t i = 0; i < INITIAL_POPULATION; ++i) {
         collection.push_back(Bird());
     }
@@ -72,7 +83,8 @@ Birds::Birds() : collection(), population(Birds::INITIAL_POPULATION) {
     reset();
 }
 
-void Birds::reset() {
+void Birds::reset()
+{
     for (auto &bird: collection) {
         bird.reset();
     }
@@ -80,13 +92,15 @@ void Birds::reset() {
     population = INITIAL_POPULATION;
 }
 
-void Birds::update(float dt) {
+void Birds::update(float dt)
+{
     for (auto &bird: collection) {
         bird.update(dt);
     }
 }
 
-void Birds::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void Birds::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
     for (auto &bird: collection) {
         if (!bird.dead) {
             target.draw(bird, states);

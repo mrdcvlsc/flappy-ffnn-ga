@@ -3,11 +3,13 @@
 std::uniform_int_distribution<size_t> FFNN::random_chance(0U, 100U);
 std::uniform_real_distribution<float> FFNN::new_random_weight(-0.5f, 0.5f);
 
-FFNN::FFNN() : input_layer(), w1(), hidden_layer(), w2(), output_layer() {
+FFNN::FFNN() : input_layer(), w1(), hidden_layer(), w2(), output_layer()
+{
     randomize_network();
 }
 
-void FFNN::randomize_network() {
+void FFNN::randomize_network()
+{
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
             w1(i, j) = new_random_weight(rand_engine);
@@ -21,11 +23,13 @@ void FFNN::randomize_network() {
     }
 }
 
-float FFNN::sigmoid(float x) {
+float FFNN::sigmoid(float x)
+{
     return 1.f / (1.f + std::exp(-x));
 }
 
-float FFNN::feedforward() {
+float FFNN::feedforward()
+{
     hidden_layer.noalias() = w1 * input_layer;
 
     // layer activation - apply sigmoid to the output of the hidden layer.
@@ -41,12 +45,14 @@ float FFNN::feedforward() {
     return output_layer(0, 0);
 }
 
-void FFNN::update_inputs(float bird_pipe_distance, float bird_gap_distance) {
+void FFNN::update_inputs(float bird_pipe_distance, float bird_gap_distance)
+{
     input_layer(0, 0) = bird_pipe_distance;
     input_layer(1, 0) = bird_gap_distance;
 }
 
-void FFNN::mutate() {
+void FFNN::mutate()
+{
     // mutate weight 1
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
@@ -67,7 +73,8 @@ void FFNN::mutate() {
     }
 }
 
-void FFNN::combine(FFNN const &net1, FFNN const &net2) {
+void FFNN::combine(FFNN const &net1, FFNN const &net2)
+{
     // mutate weight 1
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {

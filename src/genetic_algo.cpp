@@ -3,7 +3,8 @@
 
 #include "genetic_algo.hpp"
 
-void GeneticAlgorithm::get_inputs(Birds &birds, Pipes const &pipes) {
+void GeneticAlgorithm::get_inputs(Birds &birds, Pipes const &pipes)
+{
     // calculate front/last pipe gap position.
     auto top_pipe1 = pipes.pairs[pipes.front_pipe].top;
     auto top_pipe2 = pipes.pairs[(pipes.front_pipe + 1) % Pipes::COUNT].top;
@@ -40,7 +41,8 @@ void GeneticAlgorithm::get_inputs(Birds &birds, Pipes const &pipes) {
     }
 }
 
-void GeneticAlgorithm::rank_fitness(Birds &birds) {
+void GeneticAlgorithm::rank_fitness(Birds &birds)
+{
     // calculate fitness for each bird.
     for (auto &bird: birds.collection) {
         float base_gap_close_fitness = 40.f * bird.neural_net.input_layer(1, 0);
@@ -50,7 +52,8 @@ void GeneticAlgorithm::rank_fitness(Birds &birds) {
     std::sort(birds.collection.begin(), birds.collection.end(), [](Bird &a, Bird &b) { return a.fitness > b.fitness; });
 }
 
-void GeneticAlgorithm::apply_mutations(Birds &birds) {
+void GeneticAlgorithm::apply_mutations(Birds &birds)
+{
     // apply random mutations to the bad birds.
     constexpr size_t fit_size = static_cast<size_t>(static_cast<float>(Birds::INITIAL_POPULATION) * MUTATION_CUT_OFF);
     for (size_t i = fit_size; i < birds.collection.size(); ++i) {

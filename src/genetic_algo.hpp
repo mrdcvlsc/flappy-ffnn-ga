@@ -8,7 +8,8 @@
 #include "bird.hpp"
 #include "pipe.hpp"
 
-struct GeneticAlgorithm {
+struct GeneticAlgorithm
+{
     static constexpr float MUTATION_CUT_OFF = 0.2f;
     static constexpr float MUTATION_KEEP_BAD = 0.50f;
 
