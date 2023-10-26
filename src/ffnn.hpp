@@ -47,7 +47,7 @@ struct FFNN
 
     float feedforward();
 
-    void update_inputs(float bird_pipe_distance, float bird_gap_distance);
+    void update_inputs(float pipe_x_distance, float gap_y_distance);
 
     /// \brief randomly mutate the current weights.
     void mutate();

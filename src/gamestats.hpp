@@ -20,10 +20,10 @@ class GameStats : public sf::Drawable
 
     static const sf::Time TIME_PER_FRAME;
 
-    sf::Clock game_clock, fps_clock;
-    sf::Time  timeSinceLastUpdate;
+    sf::Clock clock_game, clock_fps;
+    sf::Time  update_time_elapsed;
 
-    size_t generation, current_population, total_population;
+    size_t generation, population;
     float  fps;
 
     GameStats();
@@ -33,14 +33,15 @@ class GameStats : public sf::Drawable
     /// \brief calculate current FPS & Game Time.
     /// \warning STRICTLY SHOULD ONLY BE CALLED AT THE VERY END OF A FRAME!.
     void update();
-    void population_update(size_t deaths);
+
+    void record_deaths(size_t deaths);
 
     void new_generation();
 
     private:
 
-    sf::Text m_fps_txt, m_time_txt, m_generation_txt, m_population_txt;
-    sf::Font m_font;
+    sf::Text text_fps, text_time, text_generation, text_population;
+    sf::Font font_style;
 };
 
 #endif

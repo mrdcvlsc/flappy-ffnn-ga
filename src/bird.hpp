@@ -17,8 +17,8 @@
 
 struct Bird : public sf::RectangleShape
 {
-    /// Default bird side dimension length (SIZE x SIZE).
-    static constexpr float SIZE = 20.f;
+    /// Default bird side dimension length (SIZE_N x SIZE_N).
+    static constexpr float SIZE_N = 20.f;
 
     /// Starting x position of the bird in the 2D world.
     static constexpr float START_X = static_cast<float>(WINDOW_WIDTH) / 5.f;
@@ -38,7 +38,7 @@ struct Bird : public sf::RectangleShape
     static std::uniform_int_distribution<size_t> rand_color;
 
     FFNN  neural_net;
-    float time_lived;
+    float lifetime;
     float speed;
     float fitness;
     bool  dead;
@@ -54,7 +54,7 @@ struct Bird : public sf::RectangleShape
 
 struct Birds : public sf::Drawable
 {
-    static constexpr size_t INITIAL_POPULATION = 512;
+    static constexpr size_t MAX_POPULATION = 512;
 
     std::vector<Bird> collection;
     size_t            population;

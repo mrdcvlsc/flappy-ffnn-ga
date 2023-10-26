@@ -10,8 +10,8 @@
 
 struct GeneticAlgorithm
 {
-    static constexpr float MUTATION_CUT_OFF = 0.2f;
-    static constexpr float MUTATION_KEEP_BAD = 0.50f;
+    static constexpr float FITTEST_TO_KEEP = 0.2f;
+    static constexpr float UNFIT_TO_KEEP = 0.50f;
 
     /// \brief feed inputs to the neural network of each bird, will cause each bird to jump or not jump.
     void get_inputs(Birds &birds, Pipes const &pipes);

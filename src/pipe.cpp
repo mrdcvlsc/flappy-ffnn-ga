@@ -7,13 +7,13 @@ Pipe::Pipe()
 {
 }
 
-Pipe::Pipe(float height, float x_pos, pipe_type position) : sf::RectangleShape({WIDTH, height}), position(position)
+Pipe::Pipe(float height, float x_pos, pipe_t position) : sf::RectangleShape({WIDTH, height}), position(position)
 {
     setFillColor(sf::Color::Green);
     setOutlineColor(sf::Color::Black);
     setOutlineThickness(3.f);
 
-    if (position == pipe_type::bottom) {
+    if (position == pipe_t::bottom) {
         setPosition({x_pos, WINDOW_HEIGHT - height});
     } else {
         setPosition({x_pos, 0.f});
@@ -30,8 +30,8 @@ void Pipe::update(float tick)
 
 PipePair::PipePair(float pos_x, float top_height)
 {
-    top = Pipe(top_height, pos_x, pipe_type::top);
-    btm = Pipe(static_cast<float>(WINDOW_HEIGHT) - top_height - GAP, pos_x, pipe_type::bottom);
+    top = Pipe(top_height, pos_x, pipe_t::top);
+    btm = Pipe(static_cast<float>(WINDOW_HEIGHT) - top_height - GAP, pos_x, pipe_t::bottom);
 }
 
 PipePair::PipePair() : PipePair(0.f, 0.f)
@@ -63,7 +63,7 @@ void PipePair::draw(sf::RenderTarget &target, sf::RenderStates states) const
 
 ////////////////////////// Pipes //////////////////////////
 
-Pipes::Pipes() : rand_height(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_pipe(0ULL)
+Pipes::Pipes() : rand_height(PipePair::MIN_HEIGHT, PipePair::MAX_HEIGHT), front_idx(0ULL)
 {
     for (size_t i = 0; i < COUNT; ++i) {
         pairs[i] = PipePair(START_X + i * DISTANCE, rand_height(rand_engine));
@@ -80,12 +80,12 @@ void Pipes::draw(sf::RenderTarget &target, sf::RenderStates states) const
 /// \param tick elapsed per frame.
 void Pipes::update(float tick)
 {
-    size_t new_front_pipe = front_pipe;
+    size_t new_front_pipe = front_idx;
     for (size_t i = 0; i < COUNT; ++i) {
-        size_t index = (front_pipe + i) % COUNT;
+        size_t index = (front_idx + i) % COUNT;
 
         if (pairs[index].getPosition().x + Pipe::WIDTH < 0.f) {
-            size_t back_index = (front_pipe + COUNT - 1) % COUNT;
+            size_t back_index = (front_idx + COUNT - 1) % COUNT;
             pairs[index].set_pos(pairs[back_index].getPosition().x + DISTANCE);
 
             // generate new heights for the pipe that was moved to the back.
@@ -99,12 +99,12 @@ void Pipes::update(float tick)
 
         pairs[index].update(tick);
     }
-    front_pipe = new_front_pipe;
+    front_idx = new_front_pipe;
 }
 
 void Pipes::new_generation()
 {
-    front_pipe = 0ULL;
+    front_idx = 0ULL;
     for (size_t i = 0; i < COUNT; ++i) {
         pairs[i] = PipePair(START_X + i * DISTANCE, rand_height(rand_engine));
     }

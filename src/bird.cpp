@@ -13,9 +13,9 @@ sf::Vector2f Bird::target_gap = {0.f, 0.f};
 std::uniform_int_distribution<size_t> Bird::rand_color(0, 255);
 
 Bird::Bird() :
-    sf::RectangleShape({SIZE, SIZE}),
+    sf::RectangleShape({SIZE_N, SIZE_N}),
     neural_net(),
-    time_lived(0.f),
+    lifetime(0.f),
     speed(JUMP_SPEED * 0.6f),
     fitness(0.f),
     dead(false)
@@ -35,9 +35,9 @@ void Bird::jump()
 void Bird::update(float dt)
 {
     if (!dead) {
-        time_lived += dt;
+        lifetime += dt;
 
-        if (getPosition().y < Bird::SIZE * 0.5f) {
+        if (getPosition().y < Bird::SIZE_N * 0.5f) {
             speed = GRAVITY * 0.04f;
         }
 
@@ -53,9 +53,9 @@ void Bird::update(float dt)
 
 void Bird::reset()
 {
-    time_lived = 0.f;
-    speed = JUMP_SPEED * 0.6f;
     setPosition(START_X, START_Y);
+    lifetime = 0.f;
+    speed = JUMP_SPEED * 0.6f;
     dead = false;
 }
 
@@ -74,9 +74,9 @@ void Bird::become_offspring(Bird const &b1, Bird const &b2)
 
 /////////////////////// Birds ///////////////////////
 
-Birds::Birds() : collection(), population(Birds::INITIAL_POPULATION)
+Birds::Birds() : collection(), population(Birds::MAX_POPULATION)
 {
-    for (size_t i = 0; i < INITIAL_POPULATION; ++i) {
+    for (size_t i = 0; i < MAX_POPULATION; ++i) {
         collection.push_back(Bird());
     }
 
@@ -89,7 +89,7 @@ void Birds::reset()
         bird.reset();
     }
 
-    population = INITIAL_POPULATION;
+    population = MAX_POPULATION;
 }
 
 void Birds::update(float dt)

@@ -25,15 +25,15 @@
 
 int main()
 {
-    auto game_stats = std::make_shared<GameStats>();
+    auto game_statistics = std::make_shared<GameStats>();
 
-    sf::View           game_view(sf::FloatRect(0.f, 0.f, WINDOW_WIDTH, WINDOW_HEIGHT));
-    sf::VideoMode      video_dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
     sf::RectangleShape game_area({WINDOW_WIDTH, WINDOW_HEIGHT});
-
     game_area.setFillColor(sf::Color(0, 0, 0, 0));
     game_area.setOutlineColor(sf::Color::Black);
     game_area.setOutlineThickness(2.f);
+
+    sf::View      game_view(sf::FloatRect(0.f, 0.f, WINDOW_WIDTH, WINDOW_HEIGHT));
+    sf::VideoMode video_dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     sf::RenderWindow window(video_dimension, "Flappy FFNN-GA");
     window.setView(game_view);
@@ -41,15 +41,13 @@ int main()
 
     sf::Color background(19, 235, 220);
 
-    Birds birds;
-
-    Pipes pipes;
-
-    GeneticAlgorithm ga;
+    Birds            birds;
+    Pipes            pipes;
+    GeneticAlgorithm genetic_algorithm;
 
     while (window.isOpen()) {
-        sf::Time dt = game_stats->fps_clock.restart();
-        game_stats->timeSinceLastUpdate += dt;
+        sf::Time dt = game_statistics->clock_fps.restart();
+        game_statistics->update_time_elapsed += dt;
 
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -99,40 +97,36 @@ int main()
             }
         }
 
-        ga.get_inputs(birds, pipes);
+        genetic_algorithm.get_inputs(birds, pipes);
 
-        while (game_stats->timeSinceLastUpdate > GameStats::TIME_PER_FRAME) {
-            game_stats->timeSinceLastUpdate -= GameStats::TIME_PER_FRAME;
+        while (game_statistics->update_time_elapsed > GameStats::TIME_PER_FRAME) {
+            game_statistics->update_time_elapsed -= GameStats::TIME_PER_FRAME;
+
             pipes.update(GameStats::TIME_PER_FRAME.asSeconds());
             birds.update(GameStats::TIME_PER_FRAME.asSeconds());
 
-            size_t deaths = birds_collisions(birds, pipes);
-            game_stats->population_update(deaths);
+            game_statistics->record_deaths(birds_collisions(birds, pipes));
         }
 
         window.clear(background);
 
         window.draw(game_area);
-
-        // for (int i = 0; i < 50'000; ++i)
         window.draw(birds);
-
         window.draw(pipes);
-
-        window.draw(*game_stats);
+        window.draw(*game_statistics);
 
         window.display();
 
         if (birds.population == 0ULL) {
-            ga.rank_fitness(birds);
-            ga.apply_mutations(birds);
+            genetic_algorithm.rank_fitness(birds);
+            genetic_algorithm.apply_mutations(birds);
 
-            game_stats->new_generation();
+            game_statistics->new_generation();
             pipes.new_generation();
             birds.reset();
         }
 
-        game_stats->update();
+        game_statistics->update();
     }
 
     return 0;

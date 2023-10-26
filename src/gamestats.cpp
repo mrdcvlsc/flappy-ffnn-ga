@@ -5,74 +5,73 @@
 const sf::Time GameStats::TIME_PER_FRAME = sf::seconds(1.f / static_cast<float>(GameStats::FRAME_LIMIT));
 
 GameStats::GameStats() :
-    game_clock(),
-    fps_clock(),
-    timeSinceLastUpdate(sf::Time::Zero),
+    clock_game(),
+    clock_fps(),
+    update_time_elapsed(sf::Time::Zero),
     generation(1u),
-    current_population(Birds::INITIAL_POPULATION),
-    total_population(Birds::INITIAL_POPULATION),
+    population(Birds::MAX_POPULATION),
     fps(0.f)
 {
-    if (!m_font.loadFromFile("calibril.ttf")) {
+    if (!font_style.loadFromFile("calibril.ttf")) {
         throw std::runtime_error("Error loading calibril.ttf");
     }
 
-    m_fps_txt = sf::Text("FPS : " + std::to_string(fps), m_font, FONT_SIZE);
-    m_fps_txt.setFillColor(sf::Color::Black);
+    text_fps = sf::Text("FPS : " + std::to_string(fps), font_style, FONT_SIZE);
+    text_fps.setFillColor(sf::Color::Black);
 
-    m_time_txt = sf::Text("Game Time : 0", m_font, FONT_SIZE);
-    m_time_txt.setFillColor(sf::Color::Black);
-    m_time_txt.setPosition({m_time_txt.getPosition().x, m_fps_txt.getPosition().y + m_fps_txt.getCharacterSize()});
+    text_time = sf::Text("Game Time : 0", font_style, FONT_SIZE);
+    text_time.setFillColor(sf::Color::Black);
+    text_time.setPosition({text_time.getPosition().x, text_fps.getPosition().y + text_fps.getCharacterSize()});
 
-    m_generation_txt = sf::Text("Generation : " + std::to_string(generation), m_font, FONT_SIZE);
-    m_generation_txt.setFillColor(sf::Color::Black);
-    m_generation_txt.setPosition(
-      {m_generation_txt.getPosition().x, m_time_txt.getPosition().y + m_time_txt.getCharacterSize()}
+    text_generation = sf::Text("Generation : " + std::to_string(generation), font_style, FONT_SIZE);
+    text_generation.setFillColor(sf::Color::Black);
+    text_generation.setPosition(
+      {text_generation.getPosition().x, text_time.getPosition().y + text_time.getCharacterSize()}
     );
 
-    m_population_txt = sf::Text(
-      "Population : " + std::to_string(current_population) + '/' + std::to_string(total_population), m_font, FONT_SIZE
+    text_population = sf::Text(
+      "Population : " + std::to_string(population) + '/' + std::to_string(Birds::MAX_POPULATION), font_style, FONT_SIZE
     );
-    m_population_txt.setFillColor(sf::Color::Black);
-    m_population_txt.setPosition(
-      {m_population_txt.getPosition().x, m_generation_txt.getPosition().y + m_generation_txt.getCharacterSize()}
+    text_population.setFillColor(sf::Color::Black);
+    text_population.setPosition(
+      {text_population.getPosition().x, text_generation.getPosition().y + text_generation.getCharacterSize()}
     );
 }
 
 void GameStats::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.draw(m_fps_txt, states);
-    target.draw(m_time_txt, states);
-    target.draw(m_generation_txt, states);
-    target.draw(m_population_txt, states);
+    target.draw(text_fps, states);
+    target.draw(text_time, states);
+    target.draw(text_generation, states);
+    target.draw(text_population, states);
 }
 
 /// \brief calculate current FPS & Game Time.
 /// \warning STRICTLY SHOULD ONLY BE CALLED AT THE VERY END OF A FRAME!.
 void GameStats::update()
 {
-    m_fps_txt.setString("FPS : " + std::to_string(static_cast<unsigned int>(fps)));
-    m_time_txt.setString("Game Time : " + std::to_string(game_clock.getElapsedTime().asSeconds()));
-    fps = 1.f / fps_clock.getElapsedTime().asMilliseconds() * 1000.f;
+    text_fps.setString("FPS : " + std::to_string(static_cast<unsigned int>(fps)));
+    text_time.setString("Game Time : " + std::to_string(clock_game.getElapsedTime().asSeconds()));
+    fps = 1.f / clock_fps.getElapsedTime().asMilliseconds() * 1000.f;
 }
 
 /// \brief updates the population text display.
-void GameStats::population_update(size_t deaths)
+void GameStats::record_deaths(size_t deaths)
 {
-    current_population -= deaths;
-    m_population_txt.setString(
-      "Population : " + std::to_string(current_population) + '/' + std::to_string(total_population)
+    population -= deaths;
+    text_population.setString(
+      "Population : " + std::to_string(population) + '/' + std::to_string(Birds::MAX_POPULATION)
     );
 }
 
 void GameStats::new_generation()
 {
     generation++;
-    m_generation_txt.setString("Generation : " + std::to_string(generation));
+    text_generation.setString("Generation : " + std::to_string(generation));
 
-    current_population = Birds::INITIAL_POPULATION;
+    population = Birds::MAX_POPULATION;
     fps = 0.f;
-    game_clock.restart();
-    fps_clock.restart();
-    timeSinceLastUpdate = sf::Time::Zero;
+    clock_game.restart();
+    clock_fps.restart();
+    update_time_elapsed = sf::Time::Zero;
 }

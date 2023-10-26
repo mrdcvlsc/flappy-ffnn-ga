@@ -20,11 +20,11 @@ size_t bird_collision(Bird &bird, Pipes const &pipes)
     bool hit_top_pipe1 = false, hit_btm_pipe1 = false;
     bool hit_top_pipe2 = false, hit_btm_pipe2 = false;
 
-    sf::FloatRect top_pipe1_bounds = pipes.pairs[pipes.front_pipe].top.getGlobalBounds();
-    sf::FloatRect btm_pipe1_bounds = pipes.pairs[pipes.front_pipe].btm.getGlobalBounds();
+    sf::FloatRect top_pipe1_bounds = pipes.pairs[pipes.front_idx].top.getGlobalBounds();
+    sf::FloatRect btm_pipe1_bounds = pipes.pairs[pipes.front_idx].btm.getGlobalBounds();
 
-    sf::FloatRect top_pipe2_bounds = pipes.pairs[(pipes.front_pipe + 1) % Pipes::COUNT].top.getGlobalBounds();
-    sf::FloatRect btm_pipe2_bounds = pipes.pairs[(pipes.front_pipe + 1) % Pipes::COUNT].btm.getGlobalBounds();
+    sf::FloatRect top_pipe2_bounds = pipes.pairs[(pipes.front_idx + 1) % Pipes::COUNT].top.getGlobalBounds();
+    sf::FloatRect btm_pipe2_bounds = pipes.pairs[(pipes.front_idx + 1) % Pipes::COUNT].btm.getGlobalBounds();
 
     sf::FloatRect bird_bounds = bird.getGlobalBounds();
 

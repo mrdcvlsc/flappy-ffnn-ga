@@ -45,10 +45,10 @@ float FFNN::feedforward()
     return output_layer(0, 0);
 }
 
-void FFNN::update_inputs(float bird_pipe_distance, float bird_gap_distance)
+void FFNN::update_inputs(float pipe_x_distance, float gap_y_distance)
 {
-    input_layer(0, 0) = bird_pipe_distance;
-    input_layer(1, 0) = bird_gap_distance;
+    input_layer(0, 0) = pipe_x_distance;
+    input_layer(1, 0) = gap_y_distance;
 }
 
 void FFNN::mutate()

@@ -20,7 +20,7 @@ constexpr T mod(T n, T M)
     return ((n % M) + M) % M;
 }
 
-enum class pipe_type
+enum class pipe_t
 {
     top,
     bottom
@@ -36,10 +36,10 @@ struct Pipe : public sf::RectangleShape
     /// Pipe movement speed in pixel per second.
     static constexpr float SPEED = 80.f;
 
-    pipe_type position;
+    pipe_t position;
 
     Pipe();
-    Pipe(float height, float x_pos, pipe_type position);
+    Pipe(float height, float x_pos, pipe_t position);
 
     /// \param tick elapsed per frame.
     void update(float tick);
@@ -88,7 +88,7 @@ struct Pipes : public sf::Drawable
     std::uniform_real_distribution<float> rand_height;
 
     /// Current front pipe index.
-    size_t front_pipe;
+    size_t front_idx;
 
     Pipes();
 
