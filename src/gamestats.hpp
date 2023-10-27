@@ -15,7 +15,7 @@ class GameStats : public sf::Drawable
 {
     public:
 
-    static constexpr size_t FRAME_LIMIT = 30;
+    static constexpr size_t FRAME_LIMIT = 60;
     static constexpr size_t FONT_SIZE = 12;
 
     static const sf::Time TIME_PER_FRAME;

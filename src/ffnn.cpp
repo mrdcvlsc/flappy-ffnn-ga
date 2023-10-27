@@ -1,3 +1,7 @@
+#include <ios>
+#include <fstream>
+#include <array>
+
 #include "ffnn.hpp"
 
 std::uniform_int_distribution<size_t> FFNN::random_chance(0U, 100U);
@@ -97,4 +101,36 @@ void FFNN::combine(FFNN const &net1, FFNN const &net2)
             }
         }
     }
+}
+
+bool FFNN::save_network(std::string const &output_filename)
+{
+    std::ofstream nn_file(output_filename, std::ios::binary | std::ios::trunc);
+
+    nn_file.write(reinterpret_cast<char *>(w1.data()), w1.size() * sizeof(float));
+    nn_file.write(reinterpret_cast<char *>(w2.data()), w2.size() * sizeof(float));
+    nn_file.close();
+
+    std::cout << "------------ saved  ------------\n";
+    std::cout << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
+
+    return nn_file.good();
+}
+
+bool FFNN::load_network(std::string const &filename)
+{
+    std::ifstream nn_file(filename, std::ios::binary);
+
+    if (!nn_file.good()) {
+        return false;
+    }
+
+    nn_file.read(reinterpret_cast<char *>(w1.data()), w1.size() * sizeof(float));
+    nn_file.read(reinterpret_cast<char *>(w2.data()), w2.size() * sizeof(float));
+    nn_file.close();
+
+    std::cout << "------------ loaded ------------\n";
+    std::cout << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
+
+    return nn_file.good();
 }

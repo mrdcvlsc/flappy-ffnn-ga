@@ -1,4 +1,7 @@
+src/tmp
 build
+*.nn
+*.tmp
 
 # Prerequisites
 *.d

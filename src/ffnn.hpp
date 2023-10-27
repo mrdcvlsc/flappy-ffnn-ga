@@ -2,10 +2,13 @@
 #define MRDCVLSC_FFNN_HPP
 
 #include <iostream>
-#include <cinttypes>
+#include <fstream>
 #include <chrono>
 #include <random>
+
 #include <stddef.h>
+
+#include <cinttypes>
 #include <cmath>
 
 #include <Eigen/Core>
@@ -54,6 +57,9 @@ struct FFNN
 
     /// \brief overwrite the old weights with the weights of either network1 or network2 (50/50 random selection).
     void combine(FFNN const &net1, FFNN const &net2);
+
+    bool save_network(std::string const &output_filename);
+    bool load_network(std::string const &filename);
 };
 
 #endif

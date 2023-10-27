@@ -41,9 +41,19 @@ int main()
 
     sf::Color background(19, 235, 220);
 
+    Bird player_bird;
+    player_bird.setOutlineColor(sf::Color::Red);
+    player_bird.setFillColor(sf::Color::Yellow);
+
     Birds            birds;
     Pipes            pipes;
     GeneticAlgorithm genetic_algorithm;
+
+    if (!birds.collection[0].neural_net.load_network("fittest.nn")) {
+        std::cout << "error loading the fittest network\n";
+    } else {
+        std::cout << "the previous fittests network is loaded\n";
+    }
 
     while (window.isOpen()) {
         sf::Time dt = game_statistics->clock_fps.restart();
@@ -59,41 +69,43 @@ int main()
                 // cam up
                 if (event.key.scancode == sf::Keyboard::Scan::Up) {
                     game_view.move(0.f, -VIEW_MOVE_DISTANCE);
+                    window.setView(game_view);
                 }
 
                 // cam down
                 if (event.key.scancode == sf::Keyboard::Scan::Down) {
                     game_view.move(0.f, VIEW_MOVE_DISTANCE);
+                    window.setView(game_view);
                 }
 
                 // cam left
                 if (event.key.scancode == sf::Keyboard::Scan::Left) {
                     game_view.move(-VIEW_MOVE_DISTANCE, 0.f);
+                    window.setView(game_view);
                 }
 
                 // cam right
                 if (event.key.scancode == sf::Keyboard::Scan::Right) {
                     game_view.move(VIEW_MOVE_DISTANCE, 0.f);
+                    window.setView(game_view);
                 }
 
                 // zoom in cam
                 if (event.key.scancode == sf::Keyboard::Scan::Equal) {
                     game_view.zoom(0.99f);
+                    window.setView(game_view);
                 }
 
                 // zoom out cam
                 if (event.key.scancode == sf::Keyboard::Scan::Hyphen) {
                     game_view.zoom(1.01f);
+                    window.setView(game_view);
                 }
 
                 // bird jumps
                 if (event.key.scancode == sf::Keyboard::Scan::Space) {
-                    for (auto &bird: birds.collection) {
-                        bird.jump();
-                    }
+                    player_bird.jump();
                 }
-
-                window.setView(game_view);
             }
         }
 
@@ -104,26 +116,41 @@ int main()
 
             pipes.update(GameStats::TIME_PER_FRAME.asSeconds());
             birds.update(GameStats::TIME_PER_FRAME.asSeconds());
+            player_bird.update(GameStats::TIME_PER_FRAME.asSeconds());
 
             game_statistics->record_deaths(birds_collisions(birds, pipes));
+            bird_collision(player_bird, pipes);
         }
 
         window.clear(background);
 
         window.draw(game_area);
         window.draw(birds);
+
+        if (!player_bird.dead) {
+            window.draw(player_bird);
+        }
+
         window.draw(pipes);
         window.draw(*game_statistics);
 
         window.display();
 
-        if (birds.population == 0ULL) {
+        if (birds.population == 0ULL && player_bird.dead) {
             genetic_algorithm.rank_fitness(birds);
+            
+            if (birds.collection[0].neural_net.save_network("fittest.nn")) {
+                std::cout << "fittest network saved\n";
+            } else {
+                std::cout << "failed to save the fittest network\n";
+            }
+
             genetic_algorithm.apply_mutations(birds);
 
             game_statistics->new_generation();
             pipes.new_generation();
             birds.reset();
+            player_bird.reset();
         }
 
         game_statistics->update();
