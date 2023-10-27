@@ -1,9 +1,10 @@
 # DEFAULT DEV MAKEFILE
 
+LINKING:=
 CC:=gcc
 CXX:=g++
 LIBS:=-lX11 -lXrandr -lXcursor -lsfml-graphics -lsfml-window -lsfml-system
-CXX_STANDARD:=-std=c++20
+CXX_STANDARD:=-std=c++17
 WFLAGS:=-Wall -Wextra -Wpedantic
 DFLAGS:=-g3 -fsanitize=address
 
@@ -16,7 +17,7 @@ run: $(BIN_OUT)
 	./$(BIN_OUT)
 
 $(BIN_OUT): main.cc $(OBJ)
-	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) main.cc $(OBJ) -o $(BIN_OUT) $(LIBS) $(DFLAGS))
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) main.cc $(OBJ) -o $(BIN_OUT) $(LIBS) $(LINKING) $(DFLAGS))
 
 ######################## dependent targets ########################
 
