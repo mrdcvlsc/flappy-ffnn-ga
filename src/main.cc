@@ -1,3 +1,7 @@
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Window/Window.hpp>
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -23,7 +27,7 @@
 #include "collision.hpp"
 #include "genetic_algo.hpp"
 
-int main()
+int main(int argc, char *args[])
 {
     auto game_statistics = std::make_shared<GameStats>();
 
@@ -38,6 +42,17 @@ int main()
     sf::RenderWindow window(video_dimension, "Flappy FFNN-GA");
     window.setView(game_view);
     window.setFramerateLimit(GameStats::FRAME_LIMIT);
+
+    sf::Texture capture_texture;
+    size_t captured_frames = 0;
+    bool capture_frames = false;
+    if (argc == 2) {
+        if (std::string(args[1]) == "capture") {
+            std::cout << "frame capture flag enabled\n";
+            capture_frames = true;
+            capture_texture.create(WINDOW_WIDTH, WINDOW_HEIGHT);
+        }
+    }
 
     sf::Color background(19, 235, 220);
 
@@ -135,6 +150,11 @@ int main()
         window.draw(*game_statistics);
 
         window.display();
+
+        if (capture_frames) {
+            capture_texture.update(window);
+            capture_texture.copyToImage().saveToFile("flappy-ffnn-ga-frame-" + std::to_string(captured_frames++) + ".jpg");
+        }
 
         if (birds.population == 0ULL && player_bird.dead) {
             genetic_algorithm.rank_fitness(birds);
