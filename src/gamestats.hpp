@@ -24,7 +24,7 @@ class GameStats : public sf::Drawable
     sf::Time  update_time_elapsed;
 
     size_t generation, population;
-    float  fps;
+    float  fps, highest_gametime;
 
     GameStats();
 
@@ -34,6 +34,7 @@ class GameStats : public sf::Drawable
     /// \warning STRICTLY SHOULD ONLY BE CALLED AT THE VERY END OF A FRAME!.
     void update();
 
+    /// \brief updates the population text display.
     void record_deaths(size_t deaths);
 
     void new_generation();

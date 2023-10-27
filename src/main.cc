@@ -138,7 +138,7 @@ int main()
 
         if (birds.population == 0ULL && player_bird.dead) {
             genetic_algorithm.rank_fitness(birds);
-            
+
             if (birds.collection[0].neural_net.save_network("fittest.nn")) {
                 std::cout << "fittest network saved\n";
             } else {

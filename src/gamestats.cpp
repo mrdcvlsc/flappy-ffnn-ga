@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 
 #include "gamestats.hpp"
@@ -10,7 +11,8 @@ GameStats::GameStats() :
     update_time_elapsed(sf::Time::Zero),
     generation(1u),
     population(Birds::MAX_POPULATION),
-    fps(0.f)
+    fps(0.f),
+    highest_gametime(0.f)
 {
     if (!font_style.loadFromFile("calibril.ttf")) {
         throw std::runtime_error("Error loading calibril.ttf");
@@ -19,7 +21,7 @@ GameStats::GameStats() :
     text_fps = sf::Text("FPS : " + std::to_string(fps), font_style, FONT_SIZE);
     text_fps.setFillColor(sf::Color::Black);
 
-    text_time = sf::Text("Game Time : 0", font_style, FONT_SIZE);
+    text_time = sf::Text("Game Time : (0 | 0)", font_style, FONT_SIZE);
     text_time.setFillColor(sf::Color::Black);
     text_time.setPosition({text_time.getPosition().x, text_fps.getPosition().y + text_fps.getCharacterSize()});
 
@@ -46,16 +48,16 @@ void GameStats::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(text_population, states);
 }
 
-/// \brief calculate current FPS & Game Time.
-/// \warning STRICTLY SHOULD ONLY BE CALLED AT THE VERY END OF A FRAME!.
 void GameStats::update()
 {
     text_fps.setString("FPS : " + std::to_string(static_cast<unsigned int>(fps)));
-    text_time.setString("Game Time : " + std::to_string(clock_game.getElapsedTime().asSeconds()));
+    text_time.setString(
+      "Game Time : (" + std::to_string(static_cast<size_t>(highest_gametime)) + "s | " +
+      std::to_string(static_cast<size_t>(clock_game.getElapsedTime().asSeconds())) + "s)"
+    );
     fps = 1.f / clock_fps.getElapsedTime().asMilliseconds() * 1000.f;
 }
 
-/// \brief updates the population text display.
 void GameStats::record_deaths(size_t deaths)
 {
     population -= deaths;
@@ -71,7 +73,10 @@ void GameStats::new_generation()
 
     population = Birds::MAX_POPULATION;
     fps = 0.f;
+
+    highest_gametime = std::max(highest_gametime, clock_game.getElapsedTime().asSeconds());
     clock_game.restart();
     clock_fps.restart();
+
     update_time_elapsed = sf::Time::Zero;
 }
