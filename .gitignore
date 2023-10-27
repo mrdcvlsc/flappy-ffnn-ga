@@ -2,6 +2,11 @@ src/tmp
 build
 *.nn
 *.tmp
+docs/*.mp4
+src/*.mp4
+src/*.jpg
+src/*.png
+src/*.jpeg
 
 # Prerequisites
 *.d
