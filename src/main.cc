@@ -148,7 +148,7 @@ int main()
             genetic_algorithm.apply_mutations(birds);
 
             game_statistics->new_generation();
-            pipes.new_generation();
+            pipes.reset();
             birds.reset();
             player_bird.reset();
         }

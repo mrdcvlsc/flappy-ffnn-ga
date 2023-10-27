@@ -80,7 +80,10 @@ void Pipes::draw(sf::RenderTarget &target, sf::RenderStates states) const
 /// \param tick elapsed per frame.
 void Pipes::update(float tick)
 {
-    size_t new_front_pipe = front_idx;
+    // when the front pipe goes out of the window screen to the left side, it will be moved back to the right side part
+    // of the window that is not visible to the player, and the next index pipe pair ((front_idx + 1) % COUNT) will now
+    // be the new front pipe, this way we don't need to allocate and deallocate a pipe pair in the heap.
+    size_t new_front_idx = front_idx;
     for (size_t i = 0; i < COUNT; ++i) {
         size_t index = (front_idx + i) % COUNT;
 
@@ -94,15 +97,15 @@ void Pipes::update(float tick)
             pairs[index].btm.setSize({Pipe::WIDTH, static_cast<float>(WINDOW_HEIGHT) - top_height - PipePair::GAP});
             pairs[index].btm.setPosition(pairs[index].btm.getPosition().x, top_height + PipePair::GAP);
 
-            new_front_pipe = (new_front_pipe + 1) % COUNT;
+            new_front_idx = (new_front_idx + 1) % COUNT;
         }
 
         pairs[index].update(tick);
     }
-    front_idx = new_front_pipe;
+    front_idx = new_front_idx;
 }
 
-void Pipes::new_generation()
+void Pipes::reset()
 {
     front_idx = 0ULL;
     for (size_t i = 0; i < COUNT; ++i) {

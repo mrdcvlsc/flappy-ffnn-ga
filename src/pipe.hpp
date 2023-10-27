@@ -83,6 +83,7 @@ struct Pipes : public sf::Drawable
 
     static constexpr size_t COUNT = 6;
 
+    /// \brief there are fixed set of pipes after initialization, no one is deallocated and allocated in the heap.
     std::array<PipePair, COUNT> pairs;
 
     std::uniform_real_distribution<float> rand_height;
@@ -97,7 +98,8 @@ struct Pipes : public sf::Drawable
     /// \param tick elapsed per frame.
     void update(float tick);
 
-    void new_generation();
+    /// \brief reset the pipes to their starting position.
+    void reset();
 };
 
 #endif
