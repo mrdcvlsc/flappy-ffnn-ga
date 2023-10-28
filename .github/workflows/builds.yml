@@ -39,51 +39,12 @@ jobs:
       run: cmake --build build --config Release
 
     - name: Compress ${{matrix.platform.bin}} executable
-      run: ${{matrix.platform.zipper}} ${{matrix.config.name}}-${{matrix.platform.zip}} ${{matrix.platform.bin}} ${{matrix.platform.font}}
+      run: ${{matrix.platform.zipper}} ${{matrix.platform.zip}} ${{matrix.platform.bin}} ${{matrix.platform.font}}
 
-    - name: Create github release and upload ${{matrix.config.name}}-${{matrix.platform.zip}}
-      run: gh release create ${{github.ref_name}} ${{matrix.config.name}}-${{matrix.platform.zip}} --title "${{github.ref_name}}" --notes "Release notes for ${{github.ref_name}}" --draft=false --prerelease=false
+    - name: Create github release and upload ${{matrix.platform.zip}}
+      run: gh release create ${{github.ref_name}} ${{matrix.platform.zip}} --title "${{github.ref_name}}" --notes "Release notes for ${{github.ref_name}}" --draft=false --prerelease=false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-  build-linux-clang-shared:
-    needs: build
-    permissions: write-all
-
-    name: ${{ matrix.platform.name }} ${{ matrix.config.name }}
-    runs-on: ${{ matrix.platform.os }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-        - { name: Linux Clang, os: ubuntu-latest, font: ./build/bin/calibril.ttf, bin: ./build/bin/flappy_ffnn_ga, zip: ubuntu-executable-clang.zip, zipper: zip, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
-        config:
-        - { name: shared, flags: -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release }
-
-    steps:
-
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
-    - name: Install Linux Dependencies
-      run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
-
-    - name: Configure project
-      run: cmake -S src -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
-
-    - name: Build ${{matrix.platform.bin}} executable
-      run: cmake --build build --config Release
-
-    - name: Compress ${{matrix.platform.bin}} executable
-      run: ${{matrix.platform.zipper}} ${{matrix.config.name}}-${{matrix.platform.zip}} ${{matrix.platform.bin}} ${{matrix.platform.font}}
-
-    - name: Upload ${{matrix.config.name}}-${{matrix.platform.zip}} to release
-      run: gh release upload ${{github.ref_name}} ${{matrix.config.name}}-${{matrix.platform.zip}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 
   build-others:
     needs: build
@@ -104,7 +65,7 @@ jobs:
         - { name: Linux GCC,      os: ubuntu-latest,  font: ./build/bin/calibril.ttf,   bin: ./build/bin/flappy_ffnn_ga,                zip: ubuntu-executable-gcc.zip,           zipper: zip,        flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
         config:
         - { name: static, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        - { name: shared, flags: -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release }
+        # - { name: shared, flags: -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release }
 
     steps:
 
@@ -122,9 +83,9 @@ jobs:
       run: cmake --build build --config Release
 
     - name: Compress ${{matrix.platform.bin}} executable
-      run: ${{matrix.platform.zipper}} ${{matrix.config.name}}-${{matrix.platform.zip}} ${{matrix.platform.bin}} ${{matrix.platform.font}}
+      run: ${{matrix.platform.zipper}} ${{matrix.platform.zip}} ${{matrix.platform.bin}} ${{matrix.platform.font}}
 
-    - name: Upload ${{matrix.config.name}}-${{matrix.platform.zip}} to release
-      run: gh release upload ${{github.ref_name}} ${{matrix.config.name}}-${{matrix.platform.zip}}
+    - name: Upload ${{matrix.platform.zip}} to release
+      run: gh release upload ${{github.ref_name}} ${{matrix.platform.zip}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
