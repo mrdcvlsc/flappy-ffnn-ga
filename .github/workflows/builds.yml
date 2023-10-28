@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        - { name: Linux Clang, os: ubuntu-latest, font: ./build/calibril.ttf, bin: ./build/flappy_ffnn_ga, zip: ubuntu-executable-clang.zip , zipper: zip, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Linux Clang, os: ubuntu-latest, font: ./build/bin/calibril.ttf, bin: ./build/bin/flappy_ffnn_ga, zip: ubuntu-executable-clang.zip , zipper: zip, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         config:
         - { name: static, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
 
@@ -58,7 +58,7 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        - { name: Linux Clang, os: ubuntu-latest, font: ./build/calibril.ttf, bin: ./build/flappy_ffnn_ga, zip: ubuntu-executable-clang.zip, zipper: zip, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Linux Clang, os: ubuntu-latest, font: ./build/bin/calibril.ttf, bin: ./build/bin/flappy_ffnn_ga, zip: ubuntu-executable-clang.zip, zipper: zip, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         config:
         - { name: shared, flags: -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release }
 
@@ -96,12 +96,12 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        - { name: Windows VS2019, os: windows-2019,   font: .\\build\\calibril.ttf, bin: .\\build\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-VS19.zip,  zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        - { name: Windows VS2022, os: windows-2022,   font: .\\build\\calibril.ttf, bin: .\\build\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-VS22.zip,  zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        - { name: Windows Clang,  os: windows-latest, font: .\\build\\calibril.ttf, bin: .\\build\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-clang.zip, zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
-        - { name: Windows GCC,    os: windows-latest, font: .\\build\\calibril.ttf, bin: .\\build\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-gcc.zip,   zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ }
-        - { name: MacOS XCode,    os: macos-latest,   font: ./build/calibril.ttf,   bin: ./build/flappy_ffnn_ga,                zip: mac-executable.zip,           zipper: zip,        flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        - { name: Linux GCC,      os: ubuntu-latest,  font: ./build/calibril.ttf,   bin: ./build/flappy_ffnn_ga,                zip: ubuntu-executable-gcc.zip,           zipper: zip,        flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
+        - { name: Windows VS2019, os: windows-2019,   font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-VS19.zip,  zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
+        - { name: Windows VS2022, os: windows-2022,   font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-VS22.zip,  zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
+        - { name: Windows Clang,  os: windows-latest, font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-clang.zip, zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Windows GCC,    os: windows-latest, font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-gcc.zip,   zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ }
+        - { name: MacOS XCode,    os: macos-latest,   font: ./build/bin/calibril.ttf,   bin: ./build/bin/flappy_ffnn_ga,                zip: mac-executable.zip,           zipper: zip,        flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
+        - { name: Linux GCC,      os: ubuntu-latest,  font: ./build/bin/calibril.ttf,   bin: ./build/bin/flappy_ffnn_ga,                zip: ubuntu-executable-gcc.zip,           zipper: zip,        flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
         config:
         - { name: static, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
         - { name: shared, flags: -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release }
