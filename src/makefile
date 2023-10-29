@@ -6,7 +6,9 @@ CXX:=g++
 LIBS:=-lX11 -lXrandr -lXcursor -lsfml-graphics -lsfml-window -lsfml-system
 CXX_STANDARD:=-std=c++17
 WFLAGS:=-Wall -Wextra -Wpedantic
+
 DFLAGS:=-g3 -fsanitize=address
+# DFLAGS:=-O3 -D EIGEN_NO_DEBUG
 
 SRC:=$(wildcard *.cpp)
 # OBJ:=$(SRC:.cpp=.o)
@@ -44,7 +46,7 @@ pipe.o : pipe.cpp pipe.hpp config.hpp
 ######################## other targets ########################
 
 clean:
-	rm *.out *.o *.exe
+	rm *.out *.o *.nn
 
 style:
 	@echo fixing code format and code style...

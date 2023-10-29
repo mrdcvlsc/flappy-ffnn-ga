@@ -6,6 +6,8 @@ project(flappy_ffnn_ga LANGUAGES CXX)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
+add_compile_definitions(EIGEN_NO_DEBUG)
+
 include(FetchContent)
 
 set(FETCHCONTENT_QUIET OFF)
