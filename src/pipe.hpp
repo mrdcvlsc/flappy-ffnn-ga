@@ -50,7 +50,7 @@ struct Pipe : public sf::RectangleShape
 struct PipePair : public sf::Drawable
 {
     /// Y axis space between two pair of pipes.
-    static constexpr float GAP = 110.f;
+    static constexpr float GAP = 100.f;
 
     /// top pipe's minimum height.
     static constexpr float MIN_HEIGHT = static_cast<float>(WINDOW_HEIGHT) / 40.f;
@@ -79,9 +79,9 @@ struct Pipes : public sf::Drawable
     static constexpr float START_X = static_cast<float>(WINDOW_WIDTH) * 0.45f;
 
     /// X axis space between each set of pipe pairs.
-    static constexpr float DISTANCE = Pipe::WIDTH + 100.f;
+    static constexpr float DISTANCE = Pipe::WIDTH + 110.f;
 
-    static constexpr size_t COUNT = 6;
+    static constexpr size_t COUNT = 5;
 
     /// \brief there are fixed set of pipes after initialization, no one is deallocated and allocated in the heap.
     std::array<PipePair, COUNT> pairs;
