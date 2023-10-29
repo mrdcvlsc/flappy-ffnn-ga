@@ -5,7 +5,7 @@
 #include "ffnn.hpp"
 
 std::uniform_int_distribution<size_t> FFNN::random_chance(0U, 100U);
-std::uniform_real_distribution<float> FFNN::new_random_weight(-0.5f, 0.5f);
+std::uniform_real_distribution<float> FFNN::new_random_weight(-1.f, 1.f);
 
 FFNN::FFNN() : input_layer(), w1(), hidden_layer(), w2(), output_layer()
 {
@@ -77,16 +77,16 @@ void FFNN::mutate()
     }
 }
 
-void FFNN::combine(FFNN const &net1, FFNN const &net2)
+void FFNN::combine(FFNN const &nn1, FFNN const &nn2)
 {
     // mutate weight 1
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
             size_t chance = random_chance(rand_engine);
             if (chance <= WEIGHT_SELECTION_CHANCE_THRESHOLD) {
-                w1(i, j) = net1.w1(i, j);
+                w1(i, j) = nn1.w1(i, j);
             } else {
-                w1(i, j) = net2.w1(i, j);
+                w1(i, j) = nn2.w1(i, j);
             }
         }
     }
@@ -95,9 +95,9 @@ void FFNN::combine(FFNN const &net1, FFNN const &net2)
         for (size_t i = 0; i < OUTPUT; ++i) {
             size_t chance = random_chance(rand_engine);
             if (chance <= WEIGHT_SELECTION_CHANCE_THRESHOLD) {
-                w2(i, j) = net1.w2(i, j);
+                w2(i, j) = nn1.w2(i, j);
             } else {
-                w2(i, j) = net2.w2(i, j);
+                w2(i, j) = nn2.w2(i, j);
             }
         }
     }

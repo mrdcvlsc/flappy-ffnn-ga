@@ -15,11 +15,11 @@
 
 #include "config.hpp"
 
-/// \brief Feed-Forward Neural Network (2x5x1).
+/// \brief Feed-Forward Neural Network (2x4x1).
 struct FFNN
 {
     static constexpr size_t INPUTS = 2;
-    static constexpr size_t HIDDEN = 5;
+    static constexpr size_t HIDDEN = 4;
     static constexpr size_t OUTPUT = 1;
 
     /// \brief 30% chance to mutate a weight.
@@ -56,7 +56,7 @@ struct FFNN
     void mutate();
 
     /// \brief overwrite the old weights with the weights of either network1 or network2 (50/50 random selection).
-    void combine(FFNN const &net1, FFNN const &net2);
+    void combine(FFNN const &nn1, FFNN const &nn2);
 
     bool save_network(std::string const &output_filename);
     bool load_network(std::string const &filename);
