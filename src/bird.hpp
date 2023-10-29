@@ -27,10 +27,10 @@ struct Bird : public sf::RectangleShape
     static constexpr float START_Y = static_cast<float>(WINDOW_HEIGHT) * 0.5f;
 
     /// Bird initial vertical speed.
-    static constexpr float JUMP_SPEED = -280.f;
+    static constexpr float JUMP_SPEED = -300.f;
 
     /// Gravitation acceleration.
-    static constexpr float GRAVITY = 700.f;
+    static constexpr float GRAVITY = 850.f;
 
     /// The current `Pipe` gap that the bird needs to jump over.
     static sf::Vector2f target_gap;
@@ -54,7 +54,7 @@ struct Bird : public sf::RectangleShape
 
 struct Birds : public sf::Drawable
 {
-    static constexpr size_t MAX_POPULATION = 512;
+    static constexpr size_t MAX_POPULATION = 500;
 
     std::vector<Bird> collection;
     size_t            population;

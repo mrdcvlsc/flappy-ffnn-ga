@@ -1,3 +1,4 @@
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <chrono>
 #include <ctime>
 
