@@ -11,7 +11,7 @@ void GeneticAlgorithm::get_inputs(Birds &birds, Pipes const &pipes)
 
     Pipe nearest_pipe = top_pipe2;
 
-    if (top_pipe1.getPosition().x + Pipe::WIDTH >= Bird::START_X - Bird::SIZE_N / 2.f) {
+    if (top_pipe1.getPosition().x + Pipe::WIDTH + Bird::SIZE_N * 0.25f >= Bird::START_X - Bird::SIZE_N / 2.f) {
         nearest_pipe = top_pipe1;
     }
 
@@ -35,7 +35,7 @@ void GeneticAlgorithm::get_inputs(Birds &birds, Pipes const &pipes)
         float output = bird.neural_net.feedforward();
 
         // jump if the output of a network is above a certain threshold.
-        if (output >= 0.5f) {
+        if (output > 0.5f) {
             bird.jump();
         }
     }
@@ -74,5 +74,10 @@ void GeneticAlgorithm::apply_mutations(Birds &birds)
             birds.collection[splice_n - 1 + curr_offsprings].become_offspring(birds.collection[i], birds.collection[j]);
             curr_offsprings++;
         }
+    }
+
+    // apply random mutations to half of the offsprings.
+    for (size_t i = splice_n; i < birds.collection.size() - offspring_n / 2; ++i) {
+        birds.collection[i].apply_random_mutation();
     }
 }
