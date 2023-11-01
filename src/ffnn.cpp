@@ -4,8 +4,8 @@
 
 #include "ffnn.hpp"
 
-std::uniform_int_distribution<size_t> FFNN::random_chance(0U, 100U);
-std::uniform_real_distribution<float> FFNN::new_random_weight(-1.f, 1.f);
+std::uniform_real_distribution<float> FFNN::random_chance(0.f, 1.f);
+std::uniform_real_distribution<float> FFNN::random_weight(-1.f, 1.f);
 
 FFNN::FFNN() : input_layer(), w1(), hidden_layer(), w2(), output_layer()
 {
@@ -16,13 +16,13 @@ void FFNN::randomize_network()
 {
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
-            w1(i, j) = new_random_weight(rand_engine);
+            w1(i, j) = random_weight(rand_engine);
         }
     }
 
     for (size_t j = 0; j < HIDDEN; ++j) {
         for (size_t i = 0; i < OUTPUT; ++i) {
-            w2(i, j) = new_random_weight(rand_engine);
+            w2(i, j) = random_weight(rand_engine);
         }
     }
 }
@@ -60,18 +60,18 @@ void FFNN::mutate()
     // mutate weight 1
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
-            size_t chance = random_chance(rand_engine);
+            float chance = random_chance(rand_engine);
             if (chance <= MUTATION_CHANCE_THRESHOLD) {
-                w1(i, j) = new_random_weight(rand_engine);
+                w1(i, j) = random_weight(rand_engine);
             }
         }
     }
 
     for (size_t j = 0; j < HIDDEN; ++j) {
         for (size_t i = 0; i < OUTPUT; ++i) {
-            size_t chance = random_chance(rand_engine);
+            float chance = random_chance(rand_engine);
             if (chance <= MUTATION_CHANCE_THRESHOLD) {
-                w2(i, j) = new_random_weight(rand_engine);
+                w2(i, j) = random_weight(rand_engine);
             }
         }
     }
@@ -82,7 +82,7 @@ void FFNN::combine(FFNN const &nn1, FFNN const &nn2)
     // mutate weight 1
     for (size_t j = 0; j < INPUTS; ++j) {
         for (size_t i = 0; i < HIDDEN; ++i) {
-            size_t chance = random_chance(rand_engine);
+            float chance = random_chance(rand_engine);
             if (chance <= WEIGHT_SELECTION_CHANCE_THRESHOLD) {
                 w1(i, j) = nn1.w1(i, j);
             } else {
@@ -93,7 +93,7 @@ void FFNN::combine(FFNN const &nn1, FFNN const &nn2)
 
     for (size_t j = 0; j < HIDDEN; ++j) {
         for (size_t i = 0; i < OUTPUT; ++i) {
-            size_t chance = random_chance(rand_engine);
+            float chance = random_chance(rand_engine);
             if (chance <= WEIGHT_SELECTION_CHANCE_THRESHOLD) {
                 w2(i, j) = nn1.w2(i, j);
             } else {
@@ -111,7 +111,7 @@ bool FFNN::save_network(std::string const &output_filename)
     nn_file.write(reinterpret_cast<char *>(w2.data()), w2.size() * sizeof(float));
     nn_file.close();
 
-    std::cout << "------------ saved  ------------\n";
+    std::cout << "------------ saved ------------\n";
     std::cout << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
 
     return nn_file.good();
@@ -125,12 +125,12 @@ bool FFNN::load_network(std::string const &filename)
         return false;
     }
 
+    std::cout << "------------ loaded ------------\n";
+    std::cout << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
+
     nn_file.read(reinterpret_cast<char *>(w1.data()), w1.size() * sizeof(float));
     nn_file.read(reinterpret_cast<char *>(w2.data()), w2.size() * sizeof(float));
     nn_file.close();
-
-    std::cout << "------------ loaded ------------\n";
-    std::cout << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
 
     return nn_file.good();
 }

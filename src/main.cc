@@ -61,7 +61,7 @@ int main(int argc, char *args[])
     bool        capture_frames = false;
     if (argc == 2) {
         if (std::string(args[1]) == "capture") {
-            std::cout << "frame capture flag enabled\n";
+            std::cerr << "frame capture flag enabled\n";
             capture_frames = true;
             capture_texture.create(WINDOW_WIDTH, WINDOW_HEIGHT);
         }
@@ -78,9 +78,9 @@ int main(int argc, char *args[])
     GeneticAlgorithm genetic_algorithm;
 
     if (!birds.collection[0].neural_net.load_network("fittest.nn")) {
-        std::cout << "error loading the fittest network\n";
+        std::cerr << "error loading the fittest network\n";
     } else {
-        std::cout << "the previous fittests network is loaded\n";
+        std::cerr << "the previous fittests network is loaded\n";
     }
 
     while (window.isOpen()) {
@@ -90,6 +90,14 @@ int main(int argc, char *args[])
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                genetic_algorithm.rank_fitness(birds);
+
+                if (birds.collection[0].neural_net.save_network("fittest.nn")) {
+                    std::cerr << "fittest network saved\n";
+                } else {
+                    std::cerr << "failed to save the fittest network\n";
+                }
+
                 window.close();
             }
 
@@ -175,9 +183,9 @@ int main(int argc, char *args[])
             genetic_algorithm.rank_fitness(birds);
 
             if (birds.collection[0].neural_net.save_network("fittest.nn")) {
-                std::cout << "fittest network saved\n";
+                std::cerr << "fittest network saved\n";
             } else {
-                std::cout << "failed to save the fittest network\n";
+                std::cerr << "failed to save the fittest network\n";
             }
 
             genetic_algorithm.apply_mutations(birds);

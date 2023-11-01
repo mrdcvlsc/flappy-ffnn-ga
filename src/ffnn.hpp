@@ -23,16 +23,16 @@ struct FFNN
     static constexpr size_t OUTPUT = 1;
 
     /// \brief 30% chance to mutate a weight.
-    static constexpr size_t MUTATION_CHANCE_THRESHOLD = 30;
+    static constexpr float MUTATION_CHANCE_THRESHOLD = 0.3f;
 
-    /// \brief 50% chance to choose from parentA's weight.
-    static constexpr size_t WEIGHT_SELECTION_CHANCE_THRESHOLD = 50;
+    /// \brief 50%/50% chance to choose from parent A's or parent B's weight.
+    static constexpr float WEIGHT_SELECTION_CHANCE_THRESHOLD = 0.5f;
 
     /// \brief generates number from 1 to 100.
-    static std::uniform_int_distribution<size_t> random_chance;
+    static std::uniform_real_distribution<float> random_chance;
 
     /// \brief generates weight from -0.5 to 0.5.
-    static std::uniform_real_distribution<float> new_random_weight;
+    static std::uniform_real_distribution<float> random_weight;
 
     Eigen::Matrix<float, INPUTS, 1>      input_layer;
     Eigen::Matrix<float, HIDDEN, INPUTS> w1;
