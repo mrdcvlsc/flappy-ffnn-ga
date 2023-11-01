@@ -111,8 +111,8 @@ bool FFNN::save_network(std::string const &output_filename)
     nn_file.write(reinterpret_cast<char *>(w2.data()), w2.size() * sizeof(float));
     nn_file.close();
 
-    std::cout << "------------ saved ------------\n";
-    std::cout << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
+    std::cerr << "------------ saved ------------\n";
+    std::cerr << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
 
     return nn_file.good();
 }
@@ -125,12 +125,12 @@ bool FFNN::load_network(std::string const &filename)
         return false;
     }
 
-    std::cout << "------------ loaded ------------\n";
-    std::cout << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
-
     nn_file.read(reinterpret_cast<char *>(w1.data()), w1.size() * sizeof(float));
     nn_file.read(reinterpret_cast<char *>(w2.data()), w2.size() * sizeof(float));
     nn_file.close();
+
+    std::cerr << "------------ loaded ------------\n";
+    std::cerr << "w1 = \n\n" << w1 << "\n\nw2 = \n\n" << w2 << "\n\n";
 
     return nn_file.good();
 }
