@@ -5,6 +5,10 @@
 
 A Flappy Bird like game that uses a feedforward neural network to play the game, and a genetic algorithm to learn how to play the game.
 
+<p align="center">
+  <img width="100%" alt="Sample GIF Loading..." src="docs/flappy.gif">
+</p>
+
 The player's bird which is actually just a box (has a red colored outline and filled with yellow color inside) can be controlled by the human player by pressing the `space` key in the keyboard.
 
 A human player can compete with the each generated birds controlled by their own neural network.
