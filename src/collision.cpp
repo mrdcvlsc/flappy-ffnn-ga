@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/System/Vector2.hpp>
 
 #include "config.hpp"
 #include "collision.hpp"

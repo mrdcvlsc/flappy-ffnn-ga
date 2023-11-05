@@ -1,8 +1,4 @@
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <chrono>
-#include <ctime>
-
-#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 
 #include "bird.hpp"

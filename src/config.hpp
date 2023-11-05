@@ -5,6 +5,7 @@
 #include <random>
 
 #include <cstddef>
+#include <cstdint>
 #include <cinttypes>
 
 static constexpr float VIEW_MOVE_DISTANCE = 2.f;
