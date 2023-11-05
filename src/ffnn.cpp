@@ -1,6 +1,4 @@
 #include <ios>
-#include <fstream>
-#include <array>
 
 #include "ffnn.hpp"
 

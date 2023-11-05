@@ -1,16 +1,13 @@
 #ifndef MRDCVLSC_BIRD_HPP
 #define MRDCVLSC_BIRD_HPP
 
-#include <iostream>
-#include <algorithm>
-#include <chrono>
-#include <random>
 #include <vector>
+#include <algorithm>
 
-#include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "config.hpp"
 #include "ffnn.hpp"

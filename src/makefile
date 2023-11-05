@@ -12,7 +12,7 @@ DFLAGS:=-g3 -fsanitize=address
 
 SRC:=$(wildcard *.cpp)
 # OBJ:=$(SRC:.cpp=.o)
-OBJ:=ffnn.o pipe.o bird.o collision.o genetic_algo.o gamestats.o
+OBJ:=ffnn.o pipe.o bird.o collision.o genetic_algo.o gamestats.o game.o
 BIN_OUT:=flappy.out
 
 run: $(BIN_OUT)
@@ -22,6 +22,9 @@ $(BIN_OUT): main.cc $(OBJ)
 	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) main.cc $(OBJ) -o $(BIN_OUT) $(LIBS) $(LINKING) $(DFLAGS))
 
 ######################## dependent targets ########################
+
+game.o : game.cpp ffnn.o pipe.o bird.o gamestats.o collision.o genetic_algo.o
+	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
 
 gamestats.o : gamestats.cpp gamestats.hpp bird.o
 	$(strip $(CXX) $(CXX_STANDARD) $(WFLAGS) -c $< -o $@ $(DFLAGS))
