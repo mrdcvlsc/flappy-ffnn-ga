@@ -14,7 +14,7 @@ set(FETCHCONTENT_QUIET OFF)
 set(FETCHCONTENT_SILENT OFF)
 
 FetchContent_Declare(SFML
-    URL https://github.com/SFML/SFML/archive/refs/tags/2.6.0.tar.gz
+    URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.tar.gz
 )
 
 FetchContent_Declare(Eigen
