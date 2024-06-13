@@ -1,91 +1,79 @@
 name: builds
 
-# on: [push, pull_request]
 on:
   push:
     tags:
       - 'v*'
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
 
   build:
     permissions: write-all
 
-    name: ${{ matrix.platform.name }} ${{ matrix.config.name }}
+    name: ${{ matrix.platform.name }} ${{ matrix.config.name }} ${{ matrix.build.name }}
     runs-on: ${{ matrix.platform.os }}
 
     strategy:
       fail-fast: false
       matrix:
         platform:
-        - { name: Linux Clang, os: ubuntu-latest, font: ./build/bin/calibril.ttf, bin: ./build/bin/flappy_ffnn_ga, zip: ubuntu-executable-clang.zip, zipper: zip, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Windows VS2019, os: windows-2019,   font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-VS19.zip,  zipper: 7z a -tzip }
+        - { name: Windows VS2022, os: windows-2022,   font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-VS22.zip,  zipper: 7z a -tzip }
+        # - { name: Windows Clang,  os: windows-latest, font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-clang.zip, zipper: 7z a -tzip, flags: -G "Unix Makefiles" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        # - { name: Windows GCC,    os: windows-latest, font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-gcc.zip,   zipper: 7z a -tzip, flags: -G "Unix Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ }
+        - { name: MacOS      ,    os: macos-latest,   font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: mac-executable.zip,           zipper: zip }
+        - { name: Linux GCC,      os: ubuntu-latest,  font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: ubuntu-executable-gcc.zip,    zipper: zip }
+        - { name: Linux Clang,    os: ubuntu-latest,  font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: ubuntu-executable-clang.zip,  zipper: zip,        flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         config:
-        - { name: static, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
+        - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
+        # - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
+        build:
+        - { name: Release,        flag: -DCMAKE_BUILD_TYPE=Release }
+        # - { name: Debug,          flag: -DCMAKE_BUILD_TYPE=Debug }
+        # - { name: RelWithDebInfo, flag: -DCMAKE_BUILD_TYPE=RelWithDebInfo }
+        # - { name: MinSizeRel,     flag: -DCMAKE_BUILD_TYPE=MinSizeRel }
 
     steps:
-    - name: Install Linux Dependencies
-      run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
-
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Display Tag Name
-      run : echo ${{github.ref_name}}
-
-    - name: Configure project
-      run: cmake -S src -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
-
-    - name: Build ${{matrix.platform.bin}} executable
-      run: cmake --build build --config Release
-
-    - name: Compress ${{matrix.platform.bin}} executable
-      run: ${{matrix.platform.zipper}} ${{matrix.platform.zip}} ${{matrix.platform.bin}} ${{matrix.platform.font}}
-
-    - name: Create github release and upload ${{matrix.platform.zip}}
-      run: gh release create ${{github.ref_name}} ${{matrix.platform.zip}} --title "${{github.ref_name}}" --notes "Release notes for ${{github.ref_name}}" --draft=false --prerelease=false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build-others:
-    needs: build
-    permissions: write-all
-
-    name: ${{ matrix.platform.name }} ${{ matrix.config.name }}
-    runs-on: ${{ matrix.platform.os }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-        - { name: Windows VS2019, os: windows-2019,   font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-VS19.zip,  zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        - { name: Windows VS2022, os: windows-2022,   font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-VS22.zip,  zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        - { name: Windows Clang,  os: windows-latest, font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-clang.zip, zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
-        - { name: Windows GCC,    os: windows-latest, font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-gcc.zip,   zipper: 7z a -tzip, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ }
-        - { name: MacOS XCode,    os: macos-latest,   font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: mac-executable.zip,           zipper: zip,        flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        - { name: Linux GCC,      os: ubuntu-latest,  font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: ubuntu-executable-gcc.zip,    zipper: zip,        flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        config:
-        - { name: static, flags: -DBUILD_SHARED_LIBS=FALSE -DCMAKE_BUILD_TYPE=Release }
-        # - { name: shared, flags: -DBUILD_SHARED_LIBS=TRUE -DCMAKE_BUILD_TYPE=Release }
-
-    steps:
-
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+    - name: Cache Dependencies
+      uses: actions/cache@v3
+      id: CMakeFetchContent
+      with:
+        path: build/_deps
+        key: ${{ matrix.platform.zip }}-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          ${{ matrix.platform.zip }}-
 
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
       run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
 
+    - name: Display Tag Name
+      run : echo ${{github.ref_name}}
+
     - name: Configure project
-      run: cmake -S src -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
+      run: cmake -S src -B build ${{matrix.platform.flags}} ${{matrix.config.flags}} ${{matrix.build.flag}}
 
     - name: Build ${{matrix.platform.bin}} executable
-      run: cmake --build build --config Release
+      run: cmake --build build --config ${{matrix.build.name}}
 
     - name: Compress ${{matrix.platform.bin}} executable
       run: ${{matrix.platform.zipper}} ${{matrix.platform.zip}} ${{matrix.platform.bin}} ${{matrix.platform.font}}
 
+    - name: Create github release and upload ${{matrix.platform.zip}}
+      continue-on-error: true
+      run: gh release create ${{github.ref_name}} ${{matrix.platform.zip}} --title "${{github.ref_name}}" --notes "Release notes for ${{github.ref_name}}" --draft=false --prerelease=false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Upload ${{matrix.platform.zip}} to release
+      continue-on-error: true
       run: gh release upload ${{github.ref_name}} ${{matrix.platform.zip}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
