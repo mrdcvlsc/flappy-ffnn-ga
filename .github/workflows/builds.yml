@@ -26,8 +26,8 @@ jobs:
         # - { name: Windows Clang,  os: windows-latest, font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-clang.zip, zipper: 7z a -tzip, flags: -G "Unix Makefiles" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         # - { name: Windows GCC,    os: windows-latest, font: .\\build\\bin\\calibril.ttf, bin: .\\build\\bin\\Release\\flappy_ffnn_ga.exe, zip: windows-executable-gcc.zip,   zipper: 7z a -tzip, flags: -G "Unix Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ }
         - { name: MacOS      ,    os: macos-latest,   font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: mac-executable.zip,           zipper: zip }
-        - { name: Linux GCC,      os: ubuntu-latest,  font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: ubuntu-executable-gcc.zip,    zipper: zip }
-        - { name: Linux Clang,    os: ubuntu-latest,  font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: ubuntu-executable-clang.zip,  zipper: zip,        flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Linux GCC,      os: ubuntu-22.04,  font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: ubuntu-executable-gcc.zip,    zipper: zip }
+        - { name: Linux Clang,    os: ubuntu-22.04,  font: ./build/bin/calibril.ttf,    bin: ./build/bin/flappy_ffnn_ga,                 zip: ubuntu-executable-clang.zip,  zipper: zip,        flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         config:
         - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
         # - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
@@ -38,6 +38,13 @@ jobs:
         # - { name: MinSizeRel,     flag: -DCMAKE_BUILD_TYPE=MinSizeRel }
 
     steps:
+
+    - name: Workflow Run Information
+      run: |
+        echo "Run ID     : ${{ github.run_id }}"
+        echo "Run Number : ${{ github.run_number }}"
+        echo "Run Attempt: ${{ github.run_attempt }}"
+
     - name: Checkout
       uses: actions/checkout@v4
 
